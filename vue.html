@@ -9,15 +9,12 @@
 </head>
 <body>
     <div id="app">
-        <!-- 添加一个具有唯一值的key属性，表达两个元素是完全独立的 -->
-        <template v-if="loginType === 'username'">
-            <label >Username</label>
-            <input placeholder="enter your username" :key="username-input">
-        </template>
-        <template v-else>
-            <label >Email </label>
-            <input placeholder="enter your emain" :key="email-input">
-        </template>
+        <!-- v-show不支持template 元素，也不支持v-else  -->
+        <!-- v-if是真正的渲染，子组件的销毁与重建 -->
+        <!-- v-show总是被渲染，知识css进行切换 -->
+
+        <!-- 不推荐v-if 和 v-for 一起使用 -->
+        <h1 v-show="ok">hello</h1>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -26,7 +23,7 @@
         var vm = new Vue({
             el: '#app',
             data: {
-               loginType: ''
+               ok: true
             }
             
         })
