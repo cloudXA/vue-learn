@@ -8,54 +8,53 @@
 
 </head>
 <body>
-    <!-- 当需要在数据变化时执行异步或者开销较大时，这个方式最有用 -->
     <div id="app">
-        <p>
-            Ask a yes/no question:
-            <input v-model="question">
-        </p>
-        <p>{{ answer }}</p>
+        <!-- num 1  -->
+        <!-- 上面的语法表示active这个class存在与否将取决于数据属性isActive的true or false  -->
+        <div v-bind:class="{ active: isActive }"></div>
+        <!-- v-bind:class指令可以与普通的class属性共存 -->
+        <!-- 绑定的数据对像在内联模板中 -->
+        <div 
+            class="static"
+            v-bind:class=" { active: isActive, 'text-danger': hasError } ">
+
+        </div>
+
+        <!-- num 2  -->
+        <!-- 绑定的数据对象不必内联定义在模板中 -->
+        <div v-bind:class="classObject">
+
+        </div>
+
+        <!-- num 3  -->
+        <!-- 绑定一个返回对象的计算属性 -->
+        <div v-bind:class="classObjects"></div>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
-    <script src="./node_modules/axios/dist/axios.js"></script>
-    <script src="./node_modules/lodash/lodash.js"></script>
+
     <script>
         var vm = new Vue({
             el: '#app',
             data: {
-                question: '',
-                answer: 'I cannot give you an answer'
-            },
-            // TODO: 
-            watch: {
-                // 如果'question'发生改变，这个函数会运行,除了watch选项之外，还可以使用命令式vm.$watch 
-                question(newQuestion, oldQuestion) {
-                    this.answer = 'wating for you to stop typing...'
-                    this.debouncedGetAnswer()
+                // num 1 
+                isActive: true,
+                hasError: true,
+                error: null,
+
+                // num 2 
+                classObject: {
+                    active: true,
+                    'text-danger': true
                 }
             },
-            created() {
-                // '_.debounce'是一个通过lodash限制操作频率的函数
-                // 在这个例子中，我们希望限制访问ye/api的频率
-                // ajax请求直到用户输入完毕才会发出
-                this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
-            },
-            methods: {
-                getAnswer() {
-                    if (this.question.indexOf('?') === -1) {
-                        this.answer = 'Question useally contain a querstion'
-                        return 
+            computed: {
+                // num 3 
+                classObjects() {
+                    return {
+                        active: this.isActive && !this.error,
+                        'text-danger': this.error && this.error.type === 'fatal'
                     }
-                    this.answer = 'thing'
-                    var vm = this;
-                    axios.get('https://yesno.wtf/api')
-                        .then(function (response) {
-                            vm.answer = _.capitalize(response.data.answer)
-                        })
-                        .catch(function (error) {
-                            vm.answer = 'error' + error
-                        })
                 }
             },
         })
