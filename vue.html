@@ -9,18 +9,40 @@
 </head>
 <body>
     <div id="app">
-        <!-- css属性名可以用驼峰式camecase或者短横线分隔（kebab-case,记得用引号括起来） -->
+        <!-- v-if 是一个指令，所以必须将他添加到一个元素上 -->
+        <!-- v-else 指令表示v-if的else块 -->
 
-        <!-- 对象语法常常结合返回对象的计算属性使用 -->
-        <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px'}">nih</div>
+        <!-- v-else 元素必须紧跟在v-if或者v-else-if的元素后面，否则他不会被识别 -->
+        <h1 v-if="awesome">Vue is awesome! </h1>
+        <h1 v-else >oh no </h1>
 
-        <!-- v-bind的数组语法可以将多个样式对象应用到同一个元素上 -->
-        <div v-bind:style="[baseStyles, overridingStyles]"></div>
+        <div v-if="Math.random() > 0.5">
+            now this is more 0.5
+        </div>
+        <div v-else>
+            now you less 0.5
+        </div>
 
-        <!-- v-bind:style 使用需要添加浏览器引擎前缀css属性时，如transform,vue会自动侦测并添加相应的前缀 -->
+        <template v-if="ok">
+            <div>
+                <h1>Title </h1>
+                <p>paragrph 1 </p>
+                <p>paragrph 2 </p>
+            </div>
+        </template>
+    </div>
 
-        <!-- style 绑定中属性提供一个包含多个值的数组，常用于提供多个带前缀的值 -->
-        <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+    <div v-if="type === 'A'">
+        A
+    </div>
+    <div v-else-if="type === 'B'">
+        B
+    </div>
+    <div v-else-if="type === 'C'">
+        C
+    </div>
+    <div v-else>
+        not ABC
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -29,8 +51,9 @@
         var vm = new Vue({
             el: '#app',
             data: {
-               activeColor: 'red',
-               fontSize: 30
+               awesome: false,
+               ok: true,
+               type: 'C'
             }
             
         })
