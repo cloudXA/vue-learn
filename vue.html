@@ -8,15 +8,24 @@
 
 </head>
 <body>
-    <!-- 猜测可以工作，但是是否定的 -->
-    <!-- 动态参数表达式的约束 -->
-    <!-- 变通的额方法是使用没有空格或者引号的表达式，或者用计算属性代表这种复杂表达式
-    在DOM中使用模板时，还需要避免使用大写字符来命名键名，因为浏览器会把attribute名全部强制转换为小写 -->
-    <a v-bind:['foo' + bar]="value"> ... </a>
-
+    
     <div id="app">
-        <a v-bind:[attributeName]="url"> ... </a>
-        <a v-on:[eventName]="doSomething"> ... </a>
+        <!-- .prevent告诉v-on指令对于触发的事件调用event.preventDefault() -->
+        <form v-on:submit.prevent="onSubmit">...提交</form>
+        <!-- v-on缩写 -->
+        <!-- 完整写法 -->
+        <a v-on:click="doSomething"></a>
+        <!-- 缩写 -->
+        <a @click="doSomething"></a>
+
+        <!-- v-bind缩写 -->
+        <!-- 完整写法  -->
+        <a v-bind:href="url"></a>
+
+        <!-- 缩写 -->
+        <a :href = "url"></a :href>
+
+
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -24,12 +33,9 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                attributeName: "href",
-                url: 'http://baidu.com',
-                eventName: "click"
             },
             methods: {
-                doSomething() {
+                onSubmit() {
                     alert('hi')
                 }
             },
