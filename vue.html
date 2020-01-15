@@ -5,13 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        #red {
+            color: red;
+        }
+        #green {
+            color: green;
+        }
+    </style>
 </head>
 <body>
+    <!-- mustache语法不能作用在HTML attribute中，需要使用v-bind 指令 -->
     <div id="app">
-       <p>using mustaches: {{ rawHtml }}</p>
-       <!-- span的内容将会被替换成为属性值rawHtml,直接作为html--会忽略解析属性值中的数据绑定 -->
-       <!-- 渲染HTML--动态渲染任意HTML可能非常危险，容易受到xss攻击，对可信内容使用HTML插值 -->
-       <p>Using v-html directives: <span v-html="rawHtml"></span></p>
+        <div v-bind:id="dynamiceId">
+            你好
+        </div>
+        <button v-bind:disabled="isButtonDisabled">Button</button>
     </div>
     <br>
 
@@ -20,7 +29,16 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                rawHtml: "<span style='color:red'>this is red</span>"
+                // dynamiceId: 'green'
+                dynamiceId: 'red',
+                // isButtonDisabled: true,
+                // 此一下，disable attribute甚至不会被包含在渲染出来的button中仅仅
+                // <button>Button</button>
+                isButtonDisabled: null,
+                // isButtonDisabled: undefined,
+                // isButtonDisabled: false,
+
+
             }
         })
       
