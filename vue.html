@@ -6,18 +6,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        #red {
+        #list-red {
             color: red;
         }
-        #green {
+        #list-green {
             color: green;
         }
     </style>
 </head>
 <body>
-    <!-- mustache语法不能作用在HTML attribute中，需要使用v-bind 指令 -->
     <div id="app">
-        <div v-bind:id="dynamiceId">
+        <!-- 使用JavaScript表达式作为mustache,即所有的数据绑定，vue都提供了完整的javascript -->
+        <!-- 表达式支持 -->
+        <!-- eg:
+            {{ number + 1 }}
+            {{ ok? 'yes': 'no' }}
+            {{ message.split('').revearse().join('') }}
+
+        仅支持单个表达式，以下不会生效
+            {{ var a = 1 }} //赋值语句
+            {{ if (ok) { return message }}} //流控制，应使用三元表达式 -->
+
+        <!-- 模板表达式在沙盒中，只能访问全局变量的白名单，Math Date 等， -->
+        <!-- 不应该在模板表达式视图访问用户定义的全局变量 -->
+        <div v-bind:id="'list-' + dynamiceId">
             你好
         </div>
         <button v-bind:disabled="isButtonDisabled">Button</button>
@@ -29,16 +41,8 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                // dynamiceId: 'green'
-                dynamiceId: 'red',
-                // isButtonDisabled: true,
-                // 此一下，disable attribute甚至不会被包含在渲染出来的button中仅仅
-                // <button>Button</button>
-                isButtonDisabled: null,
-                // isButtonDisabled: undefined,
-                // isButtonDisabled: false,
-
-
+                dynamiceId: 'green'
+                // dynamiceId: 'red',
             }
         })
       
