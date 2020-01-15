@@ -16,16 +16,24 @@
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
     <script>
-        var obj = {
-            foo: 'bar'
+        // 除了数据属性，vue实例还暴露了一些有用的实例属性与方法，他们都有前缀$,以便与用户定义的属性区分
+        var data  = {
+            a: 1
         }
-
-
-        Object.freeze(obj)
 
         var vm = new Vue({
             el: '#app',
-            data: obj
+            data: data
+        })
+
+        // API参考中详情
+        
+        vm.$data === data // true
+        vm.$el === document.getElementById('app') // true
+
+        // $watch是一个实例方法
+        vm.$watch('a', function(newValue, oldValue) {
+            // 这个回调函数将在vm.改变后调用
         })
 
     </script>
