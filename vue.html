@@ -7,30 +7,26 @@
     <title>Document</title>
 </head>
 <body>
+    <!-- 组件系统是vue另一个重要概念，因为他是一种抽象允许我们使用小型，独立和通常可复用的组件构建 -->
+    <!-- 大型应用， -->
     <div id="app-2">
-        <p>{{ message }}</p>
-        <!-- 添加事件监听器，通过他调用在vue实例中的定义的方法 -->
-        <button v-on:click="reverseMessage">反转</button>
+        <!-- 使用组件构建另一个组件模板 -->
+        <ol>
+            <!-- 创建一个todo-item组件的实例 -->
+            <todo-item></todo-item>
+        </ol>
     </div>
     <br>
 
-    <!-- dom原生绑定 -->
-    <button onclick="alert(message)">DOM 内联事件绑定</button>
     <script src="./node_modules/./vue/dist/vue.js"></script>
     <script>
-        let message = 'hi nice';
+        // 一个组件本质是一个拥有预定义选项的一个vue实例
+        Vue.component('todo-item', {
+                template: '<li>这是待办箱</li>'
+            })
         var app2 = new Vue({
             el: '#app-2',
-            data: {
-                message: message
-            },
-            methods: {
-                // 在该方法中，我们跟新了应用的状态，但没有触碰dom,所有的dom操作都由vue来处理，
-                // 所以只需要关注逻辑层面即可
-                reverseMessage() {
-                    this.message = this.message.split('').reverse().join('');
-                }
-            },
+            
         })
     </script>
 </body>
