@@ -15,13 +15,13 @@
     </style>
 </head>
 <body>
-    <!-- 指令（directives）是带有v-前缀的attribute。指令attribute的值预期是单个JavaScript表达式
-    （v-for）除外
-    指令的职责是，当表达式的值改变时，将其产生的连带影响，响应的作用于DOM
-    v-if指令 -->
+    <!-- 参数： -->
+        <!-- 一些指令能够接受参数，在指令名称后面以冒号表示，v-bind指令可以用于响应式的更新HTML attribute -->
     <div id="app">
-        <p v-if="seen">仙子</p>
-        <!-- v-if指令将根据表达式seen的值的真假，插入或者移除p元素 -->
+        <!-- 此处，href是参数，告知v-bind指令将该元素的href attribute与表达式url的值绑定 -->
+        <a v-bind:href="url">仙子</a>
+
+        <a v-on:click="doSomethings">dosomethings</a>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -29,9 +29,13 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                dynamiceId: 'green'
-                // dynamiceId: 'red',
-            }
+                url: 'http://baidu.com'
+            },
+            methods: {
+                doSomethings() {
+                    alert('hi')
+                }
+            },
         })
       
 
