@@ -8,32 +8,36 @@
 </head>
 <body>
     <div id="app">
-        <p>{{foo}}</p>
-        <!-- 这类的'foo'不会跟新 -->
-        <button v-on:click="foo = 'baz'">change it </button>
+        
     </div>
     <br>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
     <script>
-        // 除了数据属性，vue实例还暴露了一些有用的实例属性与方法，他们都有前缀$,以便与用户定义的属性区分
-        var data  = {
-            a: 1
-        }
-
+        // 每个vue实例在被创建都要经历一系列的初始化过程 
+        //     设置数据监听、编译模板、将实例挂载到DOM并在数据变化时更新DOM等。
+        //     运行一些生命周期钩子的函数，这给用户在不同阶段添加自己的代码的机会
         var vm = new Vue({
             el: '#app',
-            data: data
-        })
-
-        // API参考中详情
-        
-        vm.$data === data // true
-        vm.$el === document.getElementById('app') // true
-
-        // $watch是一个实例方法
-        vm.$watch('a', function(newValue, oldValue) {
-            // 这个回调函数将在vm.改变后调用
+            data: {
+                a: 1
+            },
+            // 实例生命周期不同阶段被调用，this上下文指向调用它的vue实例
+            // 生命周期函数不用箭头函数，this按作用域查找，会导致
+            // uncaught typeError: cannot read property of undefiend 
+            // uncaught typeError: this.myMethod is not a function 
+            created() {
+                alert('a is:' + this.a) 
+            },
+            mounted() {
+                
+            },
+            updated() {
+                
+            },
+            destroyed() {
+                
+            }
         })
 
     </script>
