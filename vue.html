@@ -9,26 +9,13 @@
 </head>
 <body>
     <div id="app">
-        <!-- num 1  -->
-        <!-- 上面的语法表示active这个class存在与否将取决于数据属性isActive的true or false  -->
-        <div v-bind:class="{ active: isActive }"></div>
-        <!-- v-bind:class指令可以与普通的class属性共存 -->
-        <!-- 绑定的数据对像在内联模板中 -->
-        <div 
-            class="static"
-            v-bind:class=" { active: isActive, 'text-danger': hasError } ">
+        <div v-bind:class="[activeClass, errorClass]"></div>
 
-        </div>
+        <!-- 使用三元表达式 -->
+        <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
 
-        <!-- num 2  -->
-        <!-- 绑定的数据对象不必内联定义在模板中 -->
-        <div v-bind:class="classObject">
-
-        </div>
-
-        <!-- num 3  -->
-        <!-- 绑定一个返回对象的计算属性 -->
-        <div v-bind:class="classObjects"></div>
+        <!-- 数组语法中使用对象语法 -->
+        <div v-bind:class="[{ active: isActive }, errorClass]"></div>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -37,26 +24,11 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                // num 1 
-                isActive: true,
-                hasError: true,
-                error: null,
-
-                // num 2 
-                classObject: {
-                    active: true,
-                    'text-danger': true
-                }
-            },
-            computed: {
-                // num 3 
-                classObjects() {
-                    return {
-                        active: this.isActive && !this.error,
-                        'text-danger': this.error && this.error.type === 'fatal'
-                    }
-                }
-            },
+                activeClass: 'active',
+                errorClass: 'text-danger',
+                isActive: true
+            }
+            
         })
       
 
