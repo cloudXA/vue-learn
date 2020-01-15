@@ -8,24 +8,11 @@
 
 </head>
 <body>
-    
+    <!-- 模板内表达式放入太多逻辑会让模板过重且难以维护，
+    对于任何复杂逻辑，可以使用计算逻辑 -->
     <div id="app">
-        <!-- .prevent告诉v-on指令对于触发的事件调用event.preventDefault() -->
-        <form v-on:submit.prevent="onSubmit">...提交</form>
-        <!-- v-on缩写 -->
-        <!-- 完整写法 -->
-        <a v-on:click="doSomething"></a>
-        <!-- 缩写 -->
-        <a @click="doSomething"></a>
-
-        <!-- v-bind缩写 -->
-        <!-- 完整写法  -->
-        <a v-bind:href="url"></a>
-
-        <!-- 缩写 -->
-        <a :href = "url"></a :href>
-
-
+        <p>Original message: "{{ message }}"</p>
+        <p>Computed reversed message: " {{ reversedMessage }} "</p>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -33,13 +20,20 @@
         var vm = new Vue({
             el: '#app',
             data: {
+                message: 'Hello'
             },
-            methods: {
-                onSubmit() {
-                    alert('hi')
+            computed: {
+                reversedMessage() {
+                    // this指向vm实例
+                    return this.message.split('').reverse().join('')
                 }
-            },
+            }
         })
+
+        console.log(vm.reversedMessage);
+        // vue知道vm.reversedMessage依赖于vm.message 因此当vm.message发生改变是，所有依赖vm.reversedMessage的绑定也会更新
+        vm.message = 'google'
+        console.log(vm.reversedMessage)
       
 
     </script>
