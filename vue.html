@@ -7,36 +7,30 @@
     <title>Document</title>
 </head>
 <body>
-   <!-- 我们不仅可以把数据绑定到dom文本或者attribute，还可以绑定到dom 结构 -->
     <div id="app-2">
-        <!-- 数据绑定到dom文本 -->
-        <b>{{strong}}</b>
-        <br>
-        <!-- 绑定dom属性 -->
-        <input v-bind:type="form" name="" id="" >
-        <!-- 绑定dom结构 -->
-        <p v-if="seen">现在你看到</p>
-        <ol>
-            <li v-for="todo in todos">
-                {{todo.text}}
-            </li>
-        </ol>
+        <p>{{ message }}</p>
+        <!-- 添加事件监听器，通过他调用在vue实例中的定义的方法 -->
+        <button v-on:click="reverseMessage">反转</button>
     </div>
+    <br>
+
+    <!-- dom原生绑定 -->
+    <button onclick="alert(message)">DOM 内联事件绑定</button>
     <script src="./node_modules/./vue/dist/vue.js"></script>
     <script>
+        let message = 'hi nice';
         var app2 = new Vue({
             el: '#app-2',
             data: {
-                form: 'button',
-                strong: '强壮的',
-                // seen: false
-                seen: true,
-                todos: [
-                    {text: '学习JavaScript'},
-                    {text: '学习vue'},
-                    {text: '整个牛项目'}
-                ]
-            }
+                message: message
+            },
+            methods: {
+                // 在该方法中，我们跟新了应用的状态，但没有触碰dom,所有的dom操作都由vue来处理，
+                // 所以只需要关注逻辑层面即可
+                reverseMessage() {
+                    this.message = this.message.split('').reverse().join('');
+                }
+            },
         })
     </script>
 </body>
