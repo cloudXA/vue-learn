@@ -8,37 +8,30 @@
 </head>
 <body>
     <div id="app">
-        
+        <!-- <span>Message: {{ msg }}</span> -->
+        <br>
+        <!-- 数据改变后，插值的内容发生更新 -->
+        <span >once: {{ onceMsg }}</span>
+        <br>
+        <!-- 使用v-once指令，能执行一次性插值，当数据改变时，插值处的内容不会更新 -->
+        <span v-once>这个将不会改变: {{ msg }}</span>
     </div>
     <br>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
     <script>
-        // 每个vue实例在被创建都要经历一系列的初始化过程 
-        //     设置数据监听、编译模板、将实例挂载到DOM并在数据变化时更新DOM等。
-        //     运行一些生命周期钩子的函数，这给用户在不同阶段添加自己的代码的机会
+        // 模板语法：
+            // 在底层实现上，vue将模板编译成虚拟DOM渲染函数。结合响应式系统，vue能智能计算出
+            // 最少需要重新渲染多少组件，并把DOM操作次数减到最少
         var vm = new Vue({
             el: '#app',
             data: {
-                a: 1
-            },
-            // 实例生命周期不同阶段被调用，this上下文指向调用它的vue实例
-            // 生命周期函数不用箭头函数，this按作用域查找，会导致
-            // uncaught typeError: cannot read property of undefiend 
-            // uncaught typeError: this.myMethod is not a function 
-            created() {
-                alert('a is:' + this.a) 
-            },
-            mounted() {
-                
-            },
-            updated() {
-                
-            },
-            destroyed() {
-                
+                msg: '年后',
+                onceMsg: '20sd20'
             }
         })
+        vm.msg = '哈sd';
+        vm.onceMsg = 'nso';
 
     </script>
 </body>
