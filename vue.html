@@ -7,44 +7,16 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- 组件系统是vue另一个重要概念，因为他是一种抽象允许我们使用小型，独立和通常可复用的组件构建 -->
-    <!-- 大型应用， -->
-    <div id="app-2">
-        <!-- 使用组件构建另一个组件模板 -->
-        <ol>
-            <!-- 创建一个todo-item组件的实例 -->
-
-            <!-- 现在我们为每个todo-item提供todo对象，todo对象是变量，及其内容可以是动态的， -->
-            <!-- 我们也需要为每个组件提供一个""key", -->
-            <todo-item 
-                v-for="item in groceryList"
-                v-bind:todo="item"
-                v-bind:key="item.id">
-                
-            </todo-item >
-        </ol>
+    <div id="app">
+     
     </div>
     <br>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
     <script>
-        // 改进组件渲染能力---
-            // 从父作用域将数据传到子组件，让其接受一个prop(支柱)
-        Vue.component('todo-item', {
-                // todo-item组件接受一个props,类似于一个自定义attribute（接受数据一般）
-                // 子单元通过prop接口与父单元进行了良好的解耦
-                props: ['todo'],
-                template: '<li>{{todo.text}}</li>'
-            })
-        var app2 = new Vue({
-            el: '#app-2',
-            data: {
-                groceryList: [
-                    { id: 0, text: '蔬菜' },
-                    { id: 1, text: '耐闹' },
-                    { id: 2, text: '花果' }
-                ]
-            }
+            // 所有的vue组件都是vue实例，并且接受相同的选项对象（一些跟市里特有的选项除外）
+        var vm = new Vue({
+            el: '#app',
             
         })
     </script>
