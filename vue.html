@@ -8,45 +8,57 @@
 
 </head>
 <body>
-    <!-- 模板内表达式放入太多逻辑会让模板过重且难以维护，
-    对于任何复杂逻辑，可以使用计算逻辑 -->
+    <!-- 当需要在数据变化时执行异步或者开销较大时，这个方式最有用 -->
     <div id="app">
-       {{ fullName }}
+        <p>
+            Ask a yes/no question:
+            <input v-model="question">
+        </p>
+        <p>{{ answer }}</p>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
+    <script src="./node_modules/axios/dist/axios.js"></script>
+    <script src="./node_modules/lodash/lodash.js"></script>
     <script>
         var vm = new Vue({
             el: '#app',
             data: {
-                firstName: 'fsoo',
-                lastName: 'Bar',
-                // fullName: 'Foo Bar'
+                question: '',
+                answer: 'I cannot give you an answer'
             },
-
-            // compted方法实现
-            computed: {
-                fullName: {
-                    //getter 从data 中get
-                    get: function () {
-                        return this.firstName + ' ' + this.lastName
-                    },
-                    // setter 
-                    set: function (newValue) {
-                        var names = newValue.split(' ')
-                        this.firstName = names[0]
-                        this.lastName = names[names.length - 1]
+            // TODO: 
+            watch: {
+                // 如果'question'发生改变，这个函数会运行,除了watch选项之外，还可以使用命令式vm.$watch 
+                question(newQuestion, oldQuestion) {
+                    this.answer = 'wating for you to stop typing...'
+                    this.debouncedGetAnswer()
+                }
+            },
+            created() {
+                // '_.debounce'是一个通过lodash限制操作频率的函数
+                // 在这个例子中，我们希望限制访问ye/api的频率
+                // ajax请求直到用户输入完毕才会发出
+                this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+            },
+            methods: {
+                getAnswer() {
+                    if (this.question.indexOf('?') === -1) {
+                        this.answer = 'Question useally contain a querstion'
+                        return 
                     }
+                    this.answer = 'thing'
+                    var vm = this;
+                    axios.get('https://yesno.wtf/api')
+                        .then(function (response) {
+                            vm.answer = _.capitalize(response.data.answer)
+                        })
+                        .catch(function (error) {
+                            vm.answer = 'error' + error
+                        })
                 }
             },
         })
-
-        // 此时，setter会被调用，vm.firstName 和 vm.lastName 会被更新
-        vm.fullName = 'Jonh Bob'
-        console.log(vm.reversedMessage);
-        // vue知道vm.reversedMessage依赖于vm.message 因此当vm.message发生改变是，所有依赖vm.reversedMessage的绑定也会更新
-        vm.message = 'google'
-        console.log(vm.reversedMessage)
       
 
     </script>
