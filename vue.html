@@ -9,24 +9,26 @@
 </head>
 <body>
     <div id="app">
-        <div v-bind:class="[activeClass, errorClass]"></div>
+        
+        <my-component class="baz boo"></my-component>
 
-        <!-- 使用三元表达式 -->
-        <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
-
-        <!-- 数组语法中使用对象语法 -->
-        <div v-bind:class="[{ active: isActive }, errorClass]"></div>
+        <!-- 对于带数据绑定的class同样适用 -->
+        <my-component v-bind:class="{ active: isActive }"></my-component>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
+        // 自定义一个组件使用class属性时，这些class将被添加到该组件的根元素上面
+        // 这个元素上已经存的class不会被覆盖
+        Vue.component('my-component', {
+            template: '<p class="foo bar">hi</p>'    
+        })
+
         var vm = new Vue({
             el: '#app',
             data: {
-                activeClass: 'active',
-                errorClass: 'text-danger',
-                isActive: true
+               isActive: true
             }
             
         })
