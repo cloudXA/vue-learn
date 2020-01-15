@@ -8,30 +8,22 @@
 </head>
 <body>
     <div id="app">
-        <!-- <span>Message: {{ msg }}</span> -->
-        <br>
-        <!-- 数据改变后，插值的内容发生更新 -->
-        <span >once: {{ onceMsg }}</span>
-        <br>
-        <!-- 使用v-once指令，能执行一次性插值，当数据改变时，插值处的内容不会更新 -->
-        <span v-once>这个将不会改变: {{ msg }}</span>
+       <p>using mustaches: {{ rawHtml }}</p>
+       <!-- span的内容将会被替换成为属性值rawHtml,直接作为html--会忽略解析属性值中的数据绑定 -->
+       <!-- 渲染HTML--动态渲染任意HTML可能非常危险，容易受到xss攻击，对可信内容使用HTML插值 -->
+       <p>Using v-html directives: <span v-html="rawHtml"></span></p>
     </div>
     <br>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
     <script>
-        // 模板语法：
-            // 在底层实现上，vue将模板编译成虚拟DOM渲染函数。结合响应式系统，vue能智能计算出
-            // 最少需要重新渲染多少组件，并把DOM操作次数减到最少
         var vm = new Vue({
             el: '#app',
             data: {
-                msg: '年后',
-                onceMsg: '20sd20'
+                rawHtml: "<span style='color:red'>this is red</span>"
             }
         })
-        vm.msg = '哈sd';
-        vm.onceMsg = 'nso';
+      
 
     </script>
 </body>
