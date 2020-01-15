@@ -9,40 +9,15 @@
 </head>
 <body>
     <div id="app">
-        <!-- v-if 是一个指令，所以必须将他添加到一个元素上 -->
-        <!-- v-else 指令表示v-if的else块 -->
-
-        <!-- v-else 元素必须紧跟在v-if或者v-else-if的元素后面，否则他不会被识别 -->
-        <h1 v-if="awesome">Vue is awesome! </h1>
-        <h1 v-else >oh no </h1>
-
-        <div v-if="Math.random() > 0.5">
-            now this is more 0.5
-        </div>
-        <div v-else>
-            now you less 0.5
-        </div>
-
-        <template v-if="ok">
-            <div>
-                <h1>Title </h1>
-                <p>paragrph 1 </p>
-                <p>paragrph 2 </p>
-            </div>
+        <!-- 添加一个具有唯一值的key属性，表达两个元素是完全独立的 -->
+        <template v-if="loginType === 'username'">
+            <label >Username</label>
+            <input placeholder="enter your username" :key="username-input">
         </template>
-    </div>
-
-    <div v-if="type === 'A'">
-        A
-    </div>
-    <div v-else-if="type === 'B'">
-        B
-    </div>
-    <div v-else-if="type === 'C'">
-        C
-    </div>
-    <div v-else>
-        not ABC
+        <template v-else>
+            <label >Email </label>
+            <input placeholder="enter your emain" :key="email-input">
+        </template>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -51,9 +26,7 @@
         var vm = new Vue({
             el: '#app',
             data: {
-               awesome: false,
-               ok: true,
-               type: 'C'
+               loginType: ''
             }
             
         })
