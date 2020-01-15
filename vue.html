@@ -9,26 +9,28 @@
 </head>
 <body>
     <div id="app">
-        
-        <my-component class="baz boo"></my-component>
+        <!-- css属性名可以用驼峰式camecase或者短横线分隔（kebab-case,记得用引号括起来） -->
 
-        <!-- 对于带数据绑定的class同样适用 -->
-        <my-component v-bind:class="{ active: isActive }"></my-component>
+        <!-- 对象语法常常结合返回对象的计算属性使用 -->
+        <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px'}">nih</div>
+
+        <!-- v-bind的数组语法可以将多个样式对象应用到同一个元素上 -->
+        <div v-bind:style="[baseStyles, overridingStyles]"></div>
+
+        <!-- v-bind:style 使用需要添加浏览器引擎前缀css属性时，如transform,vue会自动侦测并添加相应的前缀 -->
+
+        <!-- style 绑定中属性提供一个包含多个值的数组，常用于提供多个带前缀的值 -->
+        <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        // 自定义一个组件使用class属性时，这些class将被添加到该组件的根元素上面
-        // 这个元素上已经存的class不会被覆盖
-        Vue.component('my-component', {
-            template: '<p class="foo bar">hi</p>'    
-        })
-
         var vm = new Vue({
             el: '#app',
             data: {
-               isActive: true
+               activeColor: 'red',
+               fontSize: 30
             }
             
         })
