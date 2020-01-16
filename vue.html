@@ -9,11 +9,19 @@
 </head>
 <body>
     <div id="app">
-        <!-- 和v-if一样，v-for也可以在template来渲染一段包含多个元素的内容 -->
-        <template v-for="item in items ">
-            <li>{{ item.msg }}</li>
-            <li class="divider" v-bind:role="presentation"></li>
-        </template>
+        <!-- v-for 与 v-if 一同使用 -->
+        <li v-for="todo in todos" v-if="!todo.isComplete">
+            {{ todo }}
+        </li>
+
+        <!-- 不推荐在同一元素使用v-if 和 v-for 这意味着v-if 将分别重复运行于每个 -->
+        <!-- v-for循环中，当你只想为部分项渲染节点时，这种优先级的机制十分有用 -->
+        <ul v-if="todos.length">
+            <li v-for="todo in todos">
+                {{todo }}
+            </li>
+        </ul>
+        <p v-else >No todos left! </p>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -23,8 +31,11 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                items: [{msg: 'vue'}, {msg: 'ko'}, {msg: 'ok'}],
-                presentation: 'okfine'
+                todos: [
+                    {isComplete: true, name: '吃法'},
+                    {isComplete: false, name: '睡觉'},
+                    {isComplete: true, name: '打豆豆'}
+                ]
             }
         })
 
