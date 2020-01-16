@@ -9,32 +9,19 @@
 </head>
 <body>
     <div id="app">
-        <!-- 复选框 -->
-        <input type="checkbox"
-                v-model="toggle"
-                true-value="yes"
-                false-value="no">
+        <!-- 在change时而非input时更新 -->
+        <input v-model.lazy="msg" >
+        {{msg}}
+        <br>
+ 
+        <!-- 自动将用户输入的值转换为数值类型，可以给v-model 添加number修饰符 -->
+        <input v-model.number = 'age' type="number">
+        {{age}}
 
-        <!-- 当选中时，
-        vm.toggle == 'yes'
-        没有选中时
-        vm.toggle == 'no' -->
-
-        <input type="radio" name="" id="" v-model="pick" v-bind:value="0">
-
-        <!-- 当选中时，vm.pick == vm.0  -->
-
-        <!-- 选择框的选项 -->
-        <select name="" id="" v-model="selected">
-            <!-- 内联对象字面量
-             -->
-             <option v-bind:value="{ number: 123}">123</option>
-
-
-        </select>
-        <!-- 当选中时，
-        typeof vm.selected // object 
-        vm.selected.number // 123 -->
+        <br>
+        <!-- 如果要自动过滤用户输入的首尾空白符，可以给v-model添加trim -->
+        <input v-model.trim='msg'>
+        {{msg }}
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
