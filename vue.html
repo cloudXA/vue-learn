@@ -9,56 +9,19 @@
 </head>
 <body>
     <div id="app">
-        <!-- 在该父组件中，通过添加一个postFontSize数据属性来支持这个功能 -->
-        需求：、
-            <!-- 点击按钮时，告诉父级组件放大所以文本，vue实例提供了自定义事件的系统来解决 -->
-            <!-- 这个问题。父级组件可以像处理native DOM 事件一样通过v-on 监听子组件实例的任意事件 -->
+      <input v-model="searchText">
 
-        <!-- 自定义事件系统 
-            v-on:enlarge-text="postFontSize += 1"
-        -->
+      <!-- 等价于 -->
 
-        <!-- 有了v-on:enlarge-text="postFontSize += 1"监听器，父级组件就会接受该事件并更新 -->
-        <!-- postFontSize 的值 -->
-
-        <!-- 个人理解：  -->
-        <!-- 父组件自定义了事件监听器enlarge-text 和 事件处理程序postFontSize + 1  -->
-
-        <!-- 子组件通过与button绑定， 是的button被点击触发父组件的事件 -->
-
-        <!-- 从而实现，子组件和父组件沟通 -->
-
-        <!-- 然后当父级组件监听这个事件的时候，我们可以通过$event访问到被抛出的这个值 -->
-
-        <!-- 当这个事件处理函数是一个方法 -->
-        <div :style="{ fontSize: postFontSize + 'em' }">
-            <blog-post
-                v-for="post in posts"
-                v-bind:key="post.id"
-                v-bind:post="post"
-                v-on:enlarge-text="onEnlargeText"
-                >
-            </blog-post>
-        </div>
-       
-      
+      <input v-bind:value="searchText" 
+             v-on:input="searchText = $event.target.value"
+        >     
     </div>
+
+
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
     <script>
-        // 重构blog-post 组件，让他接受一个单独的post prop 
-
-        // 用事件抛出一个特定的值， 让组件决定他的文本放大多少，使用$emit的第二个参数来提供这个值
-        Vue.component('blog-post', {
-            props: ['post'],
-            template: ` 
-                    <div class="blog-post">
-                        <h3>{{ post.title }}</h3>
-                        <button v-on:click="$emit('enlarge-text', 19)"> 增大字体 </button>
-                        <div v-html="post.content"></div>
-                    </div>
-            `
-        })
 
         var vm = new Vue({
             el: "#app",
@@ -71,11 +34,6 @@
                 ],
                 
             },
-            methods: {
-                    onEnlargeText(enlargeAmount) {
-                        this.postFontSize += enlargeAmount
-                    }
-                },
                
         })
     </script>
