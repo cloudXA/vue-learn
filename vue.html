@@ -15,6 +15,13 @@
 
        <!-- 许多事件处理逻辑会更为复杂，v-on还可以接受一个需要调用的方法名称 -->
        <button v-on:click="greet">问候</button>
+
+       <!-- 内联JavaScript语句中调用方法 -->
+       <button v-on:click="say('hi')">say hi </button>
+       <button v-on:click="say('what')">say what</button>
+
+       <!-- 有时也需要在内联语句处理器中访问原始的DOM事件，可以用特殊变量$event 把它传入方法 -->
+        <button v-on:click="warn('表单没提交', $event)">提交</button>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -33,6 +40,16 @@
                     if(event) {
                         alert(event.target.tagName)
                     }
+                },
+                say(message) {
+                    alert(message)
+                },
+                warn(message, event) {
+                    // 现在我们可以访问原生事件对象
+                    if(event) {
+                        event.preventDefault();
+                    }
+                    alert(message)
                 }
             },
         })
