@@ -8,7 +8,13 @@
 
 </head>
 <body>
+    <!-- 组件是可复用的vue实例，所以它们与new Vue接收相同的选项，例如data computed watch methods 声明周期钩子多等
+    仅有的例外是el这样 -->
     <div id="app">
+        <button-counter></button-counter>
+        <!-- 组件复用 ，每个组件都会各自独立维护他的count 每用一次组件，就会有一个他的新实例被创建-->
+        <button-counter></button-counter>
+        <button-counter></button-counter>
         <button-counter></button-counter>
     </div>
 
@@ -16,6 +22,7 @@
 
     <script>
         Vue.component('button-counter', {
+            // data 不再是对象了，而是一个函数，因此每个实例可以维护一份呗返回对象的独立拷贝
             data() {
                 return {
                     count: 0
