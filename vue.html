@@ -9,8 +9,11 @@
 </head>
 <body>
     <div id="app">
-        <!-- v-for也接收整数，会把模板重复对应次数 -->
-        <span v-for="n in 10"> {{n}}</span>
+        <!-- 和v-if一样，v-for也可以在template来渲染一段包含多个元素的内容 -->
+        <template v-for="item in items ">
+            <li>{{ item.msg }}</li>
+            <li class="divider" v-bind:role="presentation"></li>
+        </template>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -20,6 +23,8 @@
         var vm = new Vue({
             el: '#app',
             data: {
+                items: [{msg: 'vue'}, {msg: 'ko'}, {msg: 'ok'}],
+                presentation: 'okfine'
             }
         })
 
