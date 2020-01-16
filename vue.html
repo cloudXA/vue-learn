@@ -9,40 +9,40 @@
 </head>
 <body>
     <div id="app">
-        <!-- Vue不能检测对象属性的添加或者删除 -->
-        <div v-for="value in userprofile">
-            {{value}}
-        </div>
+        <ul>
+            <li v-for="n in evenNumbers">{{ n }}</li>
+        </ul>
+        <ul>
+            <li v-for="n in even(numbers)">{{ n }}</li>
+        </ul>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
+        // 我们想要显示一个数组经过过滤或者排序后的版本，而不是实际或者重置原始数据
+        // 可以创建一个计算属性，来返回过滤或者排序后的数组
         var vm = new Vue({
             el: '#app',
             data: {
-                userprofile: {
-                    name: 'Anae'
+               numbers: [1,2,3,4,5]
+            },
+            computed: {
+                evenNumbers() {
+                    return this.numbers.filter((number) => {
+                        return number % 2 === 0
+                    })
                 }
-            }
+            },
+            methods: {
+                even(nums) {
+                    return nums.filter((num) => {
+                        return num % 2 === 0
+                    })
+                }
+            },
         })
-        // vm.a 是响应式的
-        // vm.b 不是响应式的
 
-        // 对于已经创建的实例，vue不允许添加根级别的响应式属性，但可以使用
-        // Vue.set(object, propertyName, value) 方法向嵌套对象添加响应式属性 
-        // 你可以添加新的age属性到嵌套的userProfile对象
-        Vue.set(vm.userprofile, 'age', 24)
-        vm.$set(vm.userprofile, 'age', 27)
-
-        // 你还可以使用vm.$set实例方法，他只是全局Vue.set的别名
-
-        // 为已有对象赋值多个新属性，Object.assign() 或者_.extend() 
-        // 应该使用
-        vm.userprofile = Object.assign({}, vm.userprofile, {
-            age: 35,
-            favoriteColor: 'vue green'
-        })
     </script>
 </body>
 </html>
