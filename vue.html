@@ -9,46 +9,48 @@
 </head>
 <body>
     <div id="app">
-        <!-- 原生事件处理程序调用event.preventDefault() 或者 event.stopPropagation()是十分常见的需求， -->
-        <!-- 但是，更好的方式是只有纯粹的数据逻辑，而不是去处理DOM事件细节 -->
+        <!-- 只有key是enter的时候调用vm.submit() -->
+        <input v-on:keyup.enter="submit">
 
-        <!-- 阻止单击事件继续传播 -->
-        <a v-on:click.stop="dothis"></a>
+        <input v-on:keyup.page-down="onPageDown">
 
-        <!-- 提交事件不再重载页面 -->
-        <form v-on:submit.prevent="onSubmit"></form>
+        <!-- 处理函数只会在$event.key等于PageDown时被调用 -->
 
-        <!-- 修饰符串联 -->
-        <a v-on:click.stop.prevent="dothis"></a>
+        <!-- 按键码keyCode的使劲已经被废弃了 -->
 
-        <!-- 只有修饰符 -->
-        <form action="" v-on:submit.prevent></form>
+        <!-- 可以用如下修饰符来实现仅在按下相应按键是才会触发鼠标或键盘事件的监听器 -->
+        .ctr
+        .alt
+        .shift 
+        .meta 
+        
+        <!-- alt + c  -->
+        <input type="text" @keyup.alt.67="clear">
 
-        <!-- 添加事件监听器时使用事件捕捉模式 -->
-        <!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
-        <div v-on:click.capture="dothis"></div>
+        <!-- ctr + click  -->
+        <div @click.ctr="dosomething"> do somethisn </div>
 
-        <!-- 只当在event.target是当前元素自身时触发处理函数 -->
-        <!-- 即事件不是从内部元素触发的 -->
-        <!-- 并没有委托 -->
-        <div v-on:click.self="dothis"></div>
 
-        <!-- 点击事件将只会触发一次 -->
-        <div v-on:click.once="dothis"></div>
+        <!-- .exact 修饰符 -->
+        <!-- 即使alt 或者shift被同一按下时，也会触发 -->
+        <button @click.ctr = "onClick">A </button>
 
-        <!-- .stop
-        .prevent 
-        .capture 
-        .self 
-        .once  //
-        .passive  -->
+        <!-- 有且只有Ctr被按下的时候才会触发 -->
+        <button @click.ctr.exact="onclick">B</button>
 
-        <!-- 注意
-         -->
-         <!-- 会阻止所有的点击 -->
-         <div v-on:click.prevent.self></div>
-         <!-- 只会阻止对元素自身的点击 -->
-         <div v-on:click.self.prevent></div>
+        <!-- 没有任何系统修饰符被按下的时候才会触发 -->
+        <button @click.exact="onClick">A</button>
+
+        鼠标按钮修饰符
+        .left
+        .right 
+        .middle 
+        这些修饰符会限制处理函数仅响应特定的鼠标按钮
+
+        v-on 优点
+        1. 轻松定位对应的方法
+        2. 无需再JavaScript手动绑定事件，viewModel仅有纯粹的逻辑，和DOM完全解耦
+        3. 当viewModel被销毁是，所有的事件处理器都会自动被删除，你无需担心如何清理他们
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -58,7 +60,6 @@
             el: "#app",
             data: {
             },
-            methods: {
                
         })
     </script>
