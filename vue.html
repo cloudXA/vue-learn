@@ -8,33 +8,42 @@
 
 </head>
 <body>
-    <!-- 组件是可复用的vue实例，所以它们与new Vue接收相同的选项，例如data computed watch methods 声明周期钩子多等
-    仅有的例外是el这样 -->
+   <!-- 为每篇博文渲染一个组件 -->
     <div id="app">
-        <button-counter></button-counter>
-        <!-- 组件复用 ，每个组件都会各自独立维护他的count 每用一次组件，就会有一个他的新实例被创建-->
-        <button-counter></button-counter>
-        <button-counter></button-counter>
-        <button-counter></button-counter>
+        <!-- 使用v-bind来动态传递prop,这在一开始不清楚要渲染的内容，比如从一个API获取 -->
+        <!-- 博文列表的时候，是非常有用的 -->
+       <blog-post
+        v-for="post in posts"
+        v-bind:key="post.id"
+        v-bind:title="post.title"
+        >
+
+       </blog-post>
+     
+
+       <!-- 三步: -->
+       <!-- 传递title的值给组件title属性，模板获得props值，编译显示 -->
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        Vue.component('button-counter', {
-            // data 不再是对象了，而是一个函数，因此每个实例可以维护一份呗返回对象的独立拷贝
-            data() {
-                return {
-                    count: 0
-                }
-            },
-            template: '<button v-on:click="count++">你点击我{{ count }}次</button>'
+        Vue.component('blog-post', {
+            // prop是你可以在组件上注册的一些自定义attribute。当一个值传递给一个prop attribute的时候，
+            // prop他就变成了那个组件实例的一个属性
+            props: ['title'],
+            template: '<h3> {{ title }} </h3>'
         })
 
 
         var vm = new Vue({
             el: "#app",
             data: {
+                posts: [
+                    { id: 1, title: '旅行'},
+                    { id: 2, title: '博客'},
+                    { id: 3, title: 'vue'}
+                ]
             },
                
         })
