@@ -9,21 +9,16 @@
 </head>
 <body>
     <div id="app">
-        <!-- v-for 指令基于一个数组来渲染一个列表 -->
-       <ul>
-           <!-- <li v-for="item in items"> -->
-            <li v-for="item of items">
-                {{item.message}}
-           </li>
-       </ul>
+        <ul>
+            <!-- 遍历处对象的属性值 value-->
+            <!-- 遍历对象的属性name -->
+            <!-- 遍历对象的索引值从0开始 -->
 
-       <!-- v-for块中，我们可以访问所有父作用域的属性，v-for还支持一个可选的第二个参数，当前项的索引值 -->
-       <ul>
-           <!-- 索引值从0开始 -->
-           <li v-for="(item, index ) in items">
-                {{ parentMessage }} = {{ index }} - {{ item.message }}
-           </li>
-       </ul>
+            <!-- v-for 遍历对象时，按照Object.keys()的结果遍历 -->
+            <li v-for="(value, name, index) in object">
+                {{index}}. {{name}}: {{value}} 
+            </li>
+        </ul>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -32,11 +27,11 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                parentMessage: 'Parent',
-                items: [
-                    { message: 'Goo'},
-                    { message: 'Bar'}
-                ]
+                object: {
+                    title: 'how to do list in vue',
+                    author: 'Jane Doe',
+                    publishedAt: '2020'
+                }
             }
             
         })
