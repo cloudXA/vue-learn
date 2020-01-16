@@ -9,48 +9,57 @@
 </head>
 <body>
     <div id="app">
-        <!-- 只有key是enter的时候调用vm.submit() -->
-        <input v-on:keyup.enter="submit">
+       <!-- v-model是语法糖，负责监听用户的输入事件以及更新数据，并对一些极端场景进行一些特殊处理 -->
+       <!-- v-model 在表单input textarea select 元素上创建双向数据绑定 -->
 
-        <input v-on:keyup.page-down="onPageDown">
+       <!-- v-model 会忽略所有表单元素的value checked selected 这些attribute的初始值，总是将vue实例 -->
+       <!-- 的数据作为数据来源，应该通过JavaScript在组件的data选项中声明初始值 -->
 
-        <!-- 处理函数只会在$event.key等于PageDown时被调用 -->
+       <!-- v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件 -->
 
-        <!-- 按键码keyCode的使劲已经被废弃了 -->
-
-        <!-- 可以用如下修饰符来实现仅在按下相应按键是才会触发鼠标或键盘事件的监听器 -->
-        .ctr
-        .alt
-        .shift 
-        .meta 
-        
-        <!-- alt + c  -->
-        <input type="text" @keyup.alt.67="clear">
-
-        <!-- ctr + click  -->
-        <div @click.ctr="dosomething"> do somethisn </div>
+       <!-- 1. text和textarea 元素使用value 属性和 input 事件
+       2. CheckBox 和 radio 使用checked 属性和change 事件
+       3. select字段将value作为prop并将change作为事件 -->
 
 
-        <!-- .exact 修饰符 -->
-        <!-- 即使alt 或者shift被同一按下时，也会触发 -->
-        <button @click.ctr = "onClick">A </button>
+       <!-- 1. text和textarea 元素使用value 属性和 input 事件
+       <!-- 文本 -->
+       <input v-model="message" placeholder="edit me">
+       <p>Message is : {{ message }}</p>
 
-        <!-- 有且只有Ctr被按下的时候才会触发 -->
-        <button @click.ctr.exact="onclick">B</button>
+       <!-- 多行文本 -->
+       <span>muiltiline message is: </span>
+       <p style="white-space: pre-line;">{{ messages }}</p>
+       <br>
+       <textarea v-model="messages" cols="30" rows="10"></textarea>
 
-        <!-- 没有任何系统修饰符被按下的时候才会触发 -->
-        <button @click.exact="onClick">A</button>
+        <!-- 2. 使用checked 属性和change事件 -->
+        <input type="checkbox" name="" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+        <br>
 
-        鼠标按钮修饰符
-        .left
-        .right 
-        .middle 
-        这些修饰符会限制处理函数仅响应特定的鼠标按钮
+        <!-- 多个复选框，绑定到同一个数组 -->
+        <!-- 点击确定的是value的值，没有value默认是null 同时checkedNames是数组 -->
+        <input type="checkbox" value="Jack" v-model="checkedNames" id="jack">
+        <label for="jack">Jack</label>
+        <input type="checkbox" value="John" v-model="checkedNames" id="john">
+        <label for="john">jonh</label>
+        <input type="checkbox" value="mike" v-model="checkedNames" id="mike">
+        <label for="mike">Mike</label>
+        <br>
+        <span>checked names: {{ checkedNames }}</span>
+        <br>
 
-        v-on 优点
-        1. 轻松定位对应的方法
-        2. 无需再JavaScript手动绑定事件，viewModel仅有纯粹的逻辑，和DOM完全解耦
-        3. 当viewModel被销毁是，所有的事件处理器都会自动被删除，你无需担心如何清理他们
+
+
+        <!-- 单选按钮 -->
+        <input type="radio" name="" id="one" value="One" v-model="picked">
+        <label for="one">One </label>
+        <br>
+        <input type="radio" name="" id="two" value="two" v-model="picked">
+        <label for="two">Two</label>
+        <br>
+        <span>Picked: {{ picked }}</span>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -59,6 +68,11 @@
         var vm = new Vue({
             el: "#app",
             data: {
+                message: '',
+                messages: '',
+                checked: '',
+                checkedNames: [],
+                picked: ''
             },
                
         })
