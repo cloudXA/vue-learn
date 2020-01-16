@@ -9,13 +9,21 @@
 </head>
 <body>
     <div id="app">
-        <select v-model="selected">
-            <!-- selectd 仍然是option 的value  -->
-            <option v-for="option in options" v-bind:value="option.value">
-                {{ option.text }}
-            </option>
-        </select>
-        <span>Selected: {{ selected }}</span>
+       <!-- 对于单选按钮 复选框 选择框的选线 v-model 绑定的值是静态字符串（对于复选框也可以是布尔值） -->
+       
+       <!-- 当先选中时，picked 为字符串0 -->
+       <input type="radio" name="" v-model="picked" id="" value="0">
+
+       <!-- toggle为true或者false -->
+       <input type="checkbox" name="" id="" v-model="toggle">
+ 
+       <!-- 当选中第一个选项时，selected 为字符串abc -->
+       <select name="" id="" v-model="selected">
+           <option value="abc">ABF</option>
+       </select>
+
+       <!-- 但是有时我们可能想把值绑定到vue实例的一个动态属性上， -->
+       <!-- 这是可以用v-bind实现，并且这个属性的值可以不是字符串 -->
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
