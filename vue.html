@@ -9,38 +9,18 @@
 </head>
 <body>
     <div id="app">
-        <ul>
-            <li v-for="n in evenNumbers">{{ n }}</li>
-        </ul>
-        <ul>
-            <li v-for="n in even(numbers)">{{ n }}</li>
-        </ul>
+        <!-- v-for也接收整数，会把模板重复对应次数 -->
+        <span v-for="n in 10"> {{n}}</span>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        // 我们想要显示一个数组经过过滤或者排序后的版本，而不是实际或者重置原始数据
-        // 可以创建一个计算属性，来返回过滤或者排序后的数组
+
         var vm = new Vue({
             el: '#app',
             data: {
-               numbers: [1,2,3,4,5]
-            },
-            computed: {
-                evenNumbers() {
-                    return this.numbers.filter((number) => {
-                        return number % 2 === 0
-                    })
-                }
-            },
-            methods: {
-                even(nums) {
-                    return nums.filter((num) => {
-                        return num % 2 === 0
-                    })
-                }
-            },
+            }
         })
 
     </script>
