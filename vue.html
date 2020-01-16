@@ -9,33 +9,25 @@
 </head>
 <body>
     <div id="app">
-        <!-- 在change时而非input时更新 -->
-        <input v-model.lazy="msg" >
-        {{msg}}
-        <br>
- 
-        <!-- 自动将用户输入的值转换为数值类型，可以给v-model 添加number修饰符 -->
-        <input v-model.number = 'age' type="number">
-        {{age}}
-
-        <br>
-        <!-- 如果要自动过滤用户输入的首尾空白符，可以给v-model添加trim -->
-        <input v-model.trim='msg'>
-        {{msg }}
+        <button-counter></button-counter>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
+        Vue.component('button-counter', {
+            data() {
+                return {
+                    count: 0
+                }
+            },
+            template: '<button v-on:click="count++">你点击我{{ count }}次</button>'
+        })
+
+
         var vm = new Vue({
             el: "#app",
             data: {
-                selected: 'A',
-                options: [
-                    { text: 'one', value: 'A' },
-                    { text: 'Two', value: 'B' },
-                    { text: 'Three', value: 'C'}
-                ]
             },
                
         })
