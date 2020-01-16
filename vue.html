@@ -29,12 +29,14 @@
         <!-- 从而实现，子组件和父组件沟通 -->
 
         <!-- 然后当父级组件监听这个事件的时候，我们可以通过$event访问到被抛出的这个值 -->
+
+        <!-- 当这个事件处理函数是一个方法 -->
         <div :style="{ fontSize: postFontSize + 'em' }">
             <blog-post
                 v-for="post in posts"
                 v-bind:key="post.id"
                 v-bind:post="post"
-                v-on:enlarge-text="postFontSize += $event"
+                v-on:enlarge-text="onEnlargeText"
                 >
             </blog-post>
         </div>
@@ -52,7 +54,7 @@
             template: ` 
                     <div class="blog-post">
                         <h3>{{ post.title }}</h3>
-                        <button v-on:click="$emit('enlarge-text', 15)"> 增大字体 </button>
+                        <button v-on:click="$emit('enlarge-text', 19)"> 增大字体 </button>
                         <div v-html="post.content"></div>
                     </div>
             `
@@ -66,8 +68,14 @@
                     { id: 1, title: '旅行', content: '<i>吃饭</i>'},
                     { id: 2, title: '博客', content: '<i>吃饭0</i>'},
                     { id: 3, title: 'vue', content: '<i>吃饭01</i>'}
-                ]
-            }
+                ],
+                
+            },
+            methods: {
+                    onEnlargeText(enlargeAmount) {
+                        this.postFontSize += enlargeAmount
+                    }
+                },
                
         })
     </script>
