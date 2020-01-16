@@ -9,17 +9,29 @@
 </head>
 <body>
     <div id="app">
-        <!-- 为了给vue一个提示，以便他能够追踪每个节点的身份，从而重用和重新排序现有元素， -->
-        <!-- 需要为每项提供一个唯一key属性 -->
+        <!-- 数组的变异方法(mutation method),会改变调用了这些方法的原始数组
+        push() //last in 
+        pop() // last out 
+        shift() // first out
+        unshift() //first in 
+        splice() // remove specific item
+        sort() // sort by asci 
+        reverse() // reverse 
 
-        <!-- 这是vue识别节点的一个通用机制，key并不仅与v-for特别关联，还有其他用途 -->
+        非变异方法(non-mutation methods)他们不会改变原始数组，而总是返回一个新的数组，使用非变异方法，可以用新数组替换旧数组
+        filter() // return filter array 
+        concat() // return concat array 
+        slice() // shallow copy 
 
-        <!-- 请使用基本类型如字符串或者数值类型的值，作为v-for的key  -->
-
-        <div v-for="item in items " v-bind:key="item.id">
-
-        </div>
-
+        vue为了使得DOM元得到最大范围的重用而实现了一些职能的启发方式，所以用一个含有相同元素的数组去替换原来的数组是非常高效的操作
+    
+        vue不能检测一下数组的变动
+            vm.items[indexOfItem] = newValue //利用索引直接设置一个数组项时
+            vm.item.length = newLength // 修改数组的长度时 -->
+        <ul>
+            <li v-for="(item,index) in items" v-bind:key = "index" >{{item}}</li>
+        </ul>
+        
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -28,14 +40,22 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                object: {
-                    title: 'how to do list in vue',
-                    author: 'Jane Doe',
-                    publishedAt: '2020'
-                }
+                items: ['as', 'bs', 'cs']
             }
-            
         })
+        
+        vm.items[1] = 'x' //不是响应的
+        vm.items.length = 2 //不是响应的
+
+        // 解决办法\
+        // Vue.set 
+        Vue.set(vm.items, 1, 'x'); //x 在第2项显示
+
+
+        // Array.prototype.splice 
+        vm.items.splice(2, 1, '你好') //在第3项插入
+        
+
       
 
     </script>
