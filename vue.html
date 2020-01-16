@@ -9,21 +9,32 @@
 </head>
 <body>
     <div id="app">
-       <!-- 对于单选按钮 复选框 选择框的选线 v-model 绑定的值是静态字符串（对于复选框也可以是布尔值） -->
-       
-       <!-- 当先选中时，picked 为字符串0 -->
-       <input type="radio" name="" v-model="picked" id="" value="0">
+        <!-- 复选框 -->
+        <input type="checkbox"
+                v-model="toggle"
+                true-value="yes"
+                false-value="no">
 
-       <!-- toggle为true或者false -->
-       <input type="checkbox" name="" id="" v-model="toggle">
- 
-       <!-- 当选中第一个选项时，selected 为字符串abc -->
-       <select name="" id="" v-model="selected">
-           <option value="abc">ABF</option>
-       </select>
+        <!-- 当选中时，
+        vm.toggle == 'yes'
+        没有选中时
+        vm.toggle == 'no' -->
 
-       <!-- 但是有时我们可能想把值绑定到vue实例的一个动态属性上， -->
-       <!-- 这是可以用v-bind实现，并且这个属性的值可以不是字符串 -->
+        <input type="radio" name="" id="" v-model="pick" v-bind:value="0">
+
+        <!-- 当选中时，vm.pick == vm.0  -->
+
+        <!-- 选择框的选项 -->
+        <select name="" id="" v-model="selected">
+            <!-- 内联对象字面量
+             -->
+             <option v-bind:value="{ number: 123}">123</option>
+
+
+        </select>
+        <!-- 当选中时，
+        typeof vm.selected // object 
+        vm.selected.number // 123 -->
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
