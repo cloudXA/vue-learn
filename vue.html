@@ -9,16 +9,17 @@
 </head>
 <body>
     <div id="app">
-        <ul>
-            <!-- 遍历处对象的属性值 value-->
-            <!-- 遍历对象的属性name -->
-            <!-- 遍历对象的索引值从0开始 -->
+        <!-- 为了给vue一个提示，以便他能够追踪每个节点的身份，从而重用和重新排序现有元素， -->
+        <!-- 需要为每项提供一个唯一key属性 -->
 
-            <!-- v-for 遍历对象时，按照Object.keys()的结果遍历 -->
-            <li v-for="(value, name, index) in object">
-                {{index}}. {{name}}: {{value}} 
-            </li>
-        </ul>
+        <!-- 这是vue识别节点的一个通用机制，key并不仅与v-for特别关联，还有其他用途 -->
+
+        <!-- 请使用基本类型如字符串或者数值类型的值，作为v-for的key  -->
+
+        <div v-for="item in items " v-bind:key="item.id">
+
+        </div>
+
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
