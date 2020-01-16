@@ -16,35 +16,37 @@
         v-for="post in posts"
         v-bind:key="post.id"
         v-bind:title="post.title"
+        v-bind:content="post.content"
         >
 
        </blog-post>
-     
-
        <!-- 三步: -->
        <!-- 传递title的值给组件title属性，模板获得props值，编译显示 -->
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
-
     <script>
         Vue.component('blog-post', {
             // prop是你可以在组件上注册的一些自定义attribute。当一个值传递给一个prop attribute的时候，
             // prop他就变成了那个组件实例的一个属性
-            props: ['title'],
-            template: '<h3> {{ title }} </h3>'
+            // props: ['content'],
+            props: ['title','content'],
+            template: ` 
+                        <span v-html="content"></span>
+                        <span>{{title}}</span>
+            
+            `
         })
-
 
         var vm = new Vue({
             el: "#app",
             data: {
                 posts: [
-                    { id: 1, title: '旅行'},
-                    { id: 2, title: '博客'},
-                    { id: 3, title: 'vue'}
+                    { id: 1, title: '旅行', content: '<i>吃饭</i>'},
+                    { id: 2, title: '博客', content: '<i>吃饭0</i>'},
+                    { id: 3, title: 'vue', content: '<i>吃饭01</i>'}
                 ]
-            },
+            }
                
         })
     </script>
