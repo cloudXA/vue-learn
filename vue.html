@@ -15,7 +15,6 @@
                     id="new-todo"
                     placeholder="eg Feed the cat"
             >
-            <input v-model="hi">
             <button>Add </button>   
         </form>
 
@@ -40,13 +39,14 @@
             <button v-on:click="$emit(\'remove\')">Remove</button>\
             </li>\
         ',
+        // 来自父组件向模板传递的值TODO: props父子关系
         props: ['title']
 })
 
         new Vue({
             el: '#app',
-            newTodoText: '',
-            todos: {
+            data: {
+                newTodoText: '',
                 todos: [
                     {
                         id: 1,
