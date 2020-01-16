@@ -9,19 +9,46 @@
 </head>
 <body>
     <div id="app">
-        <!-- v-on指令监听DOM事件 -->
-       <button v-on:click="counter += 1">加一</button>
-       <p>{{counter}}</p>
+        <!-- 原生事件处理程序调用event.preventDefault() 或者 event.stopPropagation()是十分常见的需求， -->
+        <!-- 但是，更好的方式是只有纯粹的数据逻辑，而不是去处理DOM事件细节 -->
 
-       <!-- 许多事件处理逻辑会更为复杂，v-on还可以接受一个需要调用的方法名称 -->
-       <button v-on:click="greet">问候</button>
+        <!-- 阻止单击事件继续传播 -->
+        <a v-on:click.stop="dothis"></a>
 
-       <!-- 内联JavaScript语句中调用方法 -->
-       <button v-on:click="say('hi')">say hi </button>
-       <button v-on:click="say('what')">say what</button>
+        <!-- 提交事件不再重载页面 -->
+        <form v-on:submit.prevent="onSubmit"></form>
 
-       <!-- 有时也需要在内联语句处理器中访问原始的DOM事件，可以用特殊变量$event 把它传入方法 -->
-        <button v-on:click="warn('表单没提交', $event)">提交</button>
+        <!-- 修饰符串联 -->
+        <a v-on:click.stop.prevent="dothis"></a>
+
+        <!-- 只有修饰符 -->
+        <form action="" v-on:submit.prevent></form>
+
+        <!-- 添加事件监听器时使用事件捕捉模式 -->
+        <!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
+        <div v-on:click.capture="dothis"></div>
+
+        <!-- 只当在event.target是当前元素自身时触发处理函数 -->
+        <!-- 即事件不是从内部元素触发的 -->
+        <!-- 并没有委托 -->
+        <div v-on:click.self="dothis"></div>
+
+        <!-- 点击事件将只会触发一次 -->
+        <div v-on:click.once="dothis"></div>
+
+        <!-- .stop
+        .prevent 
+        .capture 
+        .self 
+        .once  //
+        .passive  -->
+
+        <!-- 注意
+         -->
+         <!-- 会阻止所有的点击 -->
+         <div v-on:click.prevent.self></div>
+         <!-- 只会阻止对元素自身的点击 -->
+         <div v-on:click.self.prevent></div>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -30,28 +57,9 @@
         var vm = new Vue({
             el: "#app",
             data: {
-                name: 'vue.js'
             },
-            // 在methods对象中定义方法
             methods: {
-                greet(event) {
-                    alert("hello" + this.name + '!')
-                    // event是原生DOM事件
-                    if(event) {
-                        alert(event.target.tagName)
-                    }
-                },
-                say(message) {
-                    alert(message)
-                },
-                warn(message, event) {
-                    // 现在我们可以访问原生事件对象
-                    if(event) {
-                        event.preventDefault();
-                    }
-                    alert(message)
-                }
-            },
+               
         })
     </script>
 </body>
