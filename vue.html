@@ -9,67 +9,30 @@
 </head>
 <body>
     <div id="app">
-        <form v-on:submit.prevent="addNewTodo">
-            <label for="new-todo">Add a todo </label>
-            <input v-model="newTodoText"
-                    id="new-todo"
-                    placeholder="eg Feed the cat"
-            >
-            <button>Add </button>   
-        </form>
+        <!-- v-on指令监听DOM事件 -->
+       <button v-on:click="counter += 1">加一</button>
+       <p>{{counter}}</p>
 
-        <ul>
-            <li
-                is="todo-item"
-                v-for="(todo, index) in todos"
-                v-bind:key="todo.id"
-                v-bind:title="todo.title"
-                v-on:remove="todos.splice(index, 1)"
-            ></li>
-        </ul>
+       <!-- 许多事件处理逻辑会更为复杂，v-on还可以接受一个需要调用的方法名称 -->
+       <button v-on:click="greet">问候</button>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-    Vue.component('todo-item', {
-        template: '\
-            <li>\
-            {{ title }}\
-            <button v-on:click="$emit(\'remove\')">Remove</button>\
-            </li>\
-        ',
-        // 来自父组件向模板传递的值TODO: props父子关系
-        props: ['title']
-})
-
-        new Vue({
-            el: '#app',
+        var vm = new Vue({
+            el: "#app",
             data: {
-                newTodoText: '',
-                todos: [
-                    {
-                        id: 1,
-                        title: '洗盘子',
-                    },
-                    {
-                        id: 2,
-                        title: '倒垃圾',
-                    },
-                    {
-                        id: 3,
-                        title: '除草'
-                    }
-                ],
-                nextTodoId: 4
+                name: 'vue.js'
             },
+            // 在methods对象中定义方法
             methods: {
-                addNewTodo() {
-                    this.todos.push({
-                        id: this.nextTodoId++,
-                        title: this.newTodoText
-                    })
-                    this.newTodoText = ''
+                greet(event) {
+                    alert("hello" + this.name + '!')
+                    // event是原生DOM事件
+                    if(event) {
+                        alert(event.target.tagName)
+                    }
                 }
             },
         })
