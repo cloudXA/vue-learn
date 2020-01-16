@@ -9,12 +9,21 @@
 </head>
 <body>
     <div id="app">
-        <!-- v-show不支持template 元素，也不支持v-else  -->
-        <!-- v-if是真正的渲染，子组件的销毁与重建 -->
-        <!-- v-show总是被渲染，知识css进行切换 -->
+        <!-- v-for 指令基于一个数组来渲染一个列表 -->
+       <ul>
+           <!-- <li v-for="item in items"> -->
+            <li v-for="item of items">
+                {{item.message}}
+           </li>
+       </ul>
 
-        <!-- 不推荐v-if 和 v-for 一起使用 -->
-        <h1 v-show="ok">hello</h1>
+       <!-- v-for块中，我们可以访问所有父作用域的属性，v-for还支持一个可选的第二个参数，当前项的索引值 -->
+       <ul>
+           <!-- 索引值从0开始 -->
+           <li v-for="(item, index ) in items">
+                {{ parentMessage }} = {{ index }} - {{ item.message }}
+           </li>
+       </ul>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
@@ -23,7 +32,11 @@
         var vm = new Vue({
             el: '#app',
             data: {
-               ok: true
+                parentMessage: 'Parent',
+                items: [
+                    { message: 'Goo'},
+                    { message: 'Bar'}
+                ]
             }
             
         })
