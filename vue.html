@@ -9,36 +9,70 @@
 </head>
 <body>
     <div id="app">
-        <!-- v-for 与 v-if 一同使用 -->
-        <li v-for="todo in todos" v-if="!todo.isComplete">
-            {{ todo }}
-        </li>
+        <form v-on:submit.prevent="addNewTodo">
+            <label for="new-todo">Add a todo </label>
+            <input v-model="newTodoText"
+                    id="new-todo"
+                    placeholder="eg Feed the cat"
+            >
+            <input v-model="hi">
+            <button>Add </button>   
+        </form>
 
-        <!-- 不推荐在同一元素使用v-if 和 v-for 这意味着v-if 将分别重复运行于每个 -->
-        <!-- v-for循环中，当你只想为部分项渲染节点时，这种优先级的机制十分有用 -->
-        <ul v-if="todos.length">
-            <li v-for="todo in todos">
-                {{todo }}
-            </li>
+        <ul>
+            <li
+                is="todo-item"
+                v-for="(todo, index) in todos"
+                v-bind:key="todo.id"
+                v-bind:title="todo.title"
+                v-on:remove="todos.splice(index, 1)"
+            ></li>
         </ul>
-        <p v-else >No todos left! </p>
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
+    Vue.component('todo-item', {
+        template: '\
+            <li>\
+            {{ title }}\
+            <button v-on:click="$emit(\'remove\')">Remove</button>\
+            </li>\
+        ',
+        props: ['title']
+})
 
-        var vm = new Vue({
+        new Vue({
             el: '#app',
-            data: {
+            newTodoText: '',
+            todos: {
                 todos: [
-                    {isComplete: true, name: '吃法'},
-                    {isComplete: false, name: '睡觉'},
-                    {isComplete: true, name: '打豆豆'}
-                ]
-            }
+                    {
+                        id: 1,
+                        title: '洗盘子',
+                    },
+                    {
+                        id: 2,
+                        title: '倒垃圾',
+                    },
+                    {
+                        id: 3,
+                        title: '除草'
+                    }
+                ],
+                nextTodoId: 4
+            },
+            methods: {
+                addNewTodo() {
+                    this.todos.push({
+                        id: this.nextTodoId++,
+                        title: this.newTodoText
+                    })
+                    this.newTodoText = ''
+                }
+            },
         })
-
     </script>
 </body>
 </html>
