@@ -27,12 +27,14 @@
         <!-- 子组件通过与button绑定， 是的button被点击触发父组件的事件 -->
 
         <!-- 从而实现，子组件和父组件沟通 -->
+
+        <!-- 然后当父级组件监听这个事件的时候，我们可以通过$event访问到被抛出的这个值 -->
         <div :style="{ fontSize: postFontSize + 'em' }">
             <blog-post
                 v-for="post in posts"
                 v-bind:key="post.id"
                 v-bind:post="post"
-                v-on:enlarge-text="postFontSize += 1"
+                v-on:enlarge-text="postFontSize += $event"
                 >
             </blog-post>
         </div>
@@ -43,12 +45,14 @@
     <script src="./node_modules/./vue/dist/vue.js"></script>
     <script>
         // 重构blog-post 组件，让他接受一个单独的post prop 
+
+        // 用事件抛出一个特定的值， 让组件决定他的文本放大多少，使用$emit的第二个参数来提供这个值
         Vue.component('blog-post', {
             props: ['post'],
             template: ` 
                     <div class="blog-post">
                         <h3>{{ post.title }}</h3>
-                        <button v-on:click="$emit('enlarge-text')"> 增大字体 </button>
+                        <button v-on:click="$emit('enlarge-text', 15)"> 增大字体 </button>
                         <div v-html="post.content"></div>
                     </div>
             `
