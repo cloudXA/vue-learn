@@ -8,33 +8,25 @@
 
 </head>
 <body>
-   <!-- 为每篇博文渲染一个组件 -->
     <div id="app">
-        <!-- 使用v-bind来动态传递prop,这在一开始不清楚要渲染的内容，比如从一个API获取 -->
-        <!-- 博文列表的时候，是非常有用的 -->
        <blog-post
         v-for="post in posts"
         v-bind:key="post.id"
-        v-bind:title="post.title"
-        v-bind:content="post.content"
+        v-bind:post="post"
         >
-
        </blog-post>
-       <!-- 三步: -->
-       <!-- 传递title的值给组件title属性，模板获得props值，编译显示 -->
+      
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
     <script>
+        // 重构blog-post 组件，让他接受一个单独的post prop 
         Vue.component('blog-post', {
-            // prop是你可以在组件上注册的一些自定义attribute。当一个值传递给一个prop attribute的时候，
-            // prop他就变成了那个组件实例的一个属性
-            // props: ['content'],
-            props: ['title','content'],
+            props: ['post'],
             template: ` 
-                        <span v-html="content"></span>
-                        <span>{{title}}</span>
-            
+                    <div class="blog-post">
+                        <h3>{{ post.title }}</h3>
+                        <div v-html="post.content"></div>
             `
         })
 
