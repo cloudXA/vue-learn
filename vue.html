@@ -9,37 +9,51 @@
 </head>
 <body>
     <div id="app">
-      
+
+        <!-- // 传入一个数字 -->
+
+        <!-- 静态绑定 -->
+      <blog-post v-bind:likes="42"></blog-post>
+
+      <!-- 用一个变量进行动态赋值 -->
+      <blog-post v-bind:likes="post.likes"></blog-post>
+
+      <!-- 传入布尔值 -->
+      <!-- 包含该prop没有值的情况在内，都意味着true -->
+      <blog-post is-pubilshed></blog-post>
+
+        <!-- 这是JavaScript表达式，而不是字符串 -->
+
+      <blog-post v-bind:is-pubilshed="false"></blog-post>
+
+      <!-- 用一个变量进行动态赋值 -->
+      <blog-post v-bind:is-pubilshed="post.isPublished"></blog-post>
+
+
+      <!-- 传入数组 -->
+        <!-- 这是JavaScript表达式，而不是字符串 -->
+
+      <blog-post v-bind:comment-ids="[12,12,335]"></blog-post>
+      <blog-post v-bind:comment-ids="post.commentIds"></blog-post>
+
+
+        <!-- 传入一个对象 -->
+        <!-- 这是JavaScript表达式，而不是字符串 -->
+        <blog-post 
+            v-bind:author="{
+                name: '张三',
+                company: 'verdian'
+            }"></blog-post>
+
+            <blog-post v-bind:is-pubilshed="post.author"></blog-post>
+
+
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        // prop类型
-        //     字符串数组形式prop
-        //         props:['title', 'likes', 'isPublished', 'commentIds', 'author']
-        //     对象形式列出 prop
-        //         props: {
-        //                 title: String,
-        //                 likes: Number,
-        //                 isPublished: Boolean,
-        //                 commentIds: Array,
-        //                 author: Object,
-        //                 callback: Function,
-        //                 contactsPromise: Promise // or any other constructor
-        //             }
 
-        // 给 prop 传入一个静态的值：
-        // <blog-post title="My journey with Vue"></blog-post>
-
-        // // 也知道 prop 可以通过 v-bind 动态赋值，例如：
-        // // <!-- 动态赋予一个变量的值 -->
-        // <blog-post v-bind:title="post.title"></blog-post>
-
-        // // <!-- 动态赋予一个复杂表达式的值 -->
-        // <blog-post
-        // v-bind:title="post.title + ' by ' + post.author.name"
-        // ></blog-post>
 
         var vm = new Vue({
             el: '#app',
