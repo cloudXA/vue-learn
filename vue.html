@@ -9,14 +9,25 @@
 </head>
 <body>
     <div id="app">
-       <!-- 组件之间切换 -->
-       <!-- 通过vue的<component>元素加一个特殊的is attribute来实现 -->
-        <!-- 组件会在componentId改变时改变 -->
-        <component :is="componentId"></component>
+      <!-- ul ol table select 对于那些元素可以出现在其内部有严格限制
+      li tr option 只能出现在其他特定元素内部 -->
 
-        <!-- componentId: 还包括
-            已注册的名字
-            一个组件的选项对象 -->
+      <!-- 以下blog-post-row 会被作为无效的内容提升到外部，会导致渲染结果出错 -->
+
+      <table>
+        <blog-post-row></blog-post-row>
+      </table>
+
+      <!-- 解决办法 -->
+
+      <table>
+          <tr is="blog-post-row"></tr>
+      </table>
+
+      <!-- 注意如果我们从以下来源使用模板的话，这条限制是不存在的
+      1. 字符串 （template: '...'）
+      2. 单文件组件（.vue）
+      3. <script type="text/x-template"></script> -->
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
