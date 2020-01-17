@@ -12,7 +12,11 @@
     <div id="app">
 
         <!-- 通过组件的属性为prop的属性赋值 -->
-        <button-counter title="title1"></button-counter>
+        <!--  2.组件父级就可以通过数据绑定的方式去接收到$emit函数所触发的事件 -->
+
+        <button-counter title="title1" @clicknow="clicknow">
+            <h2>hi...hi </h2>
+        </button-counter>
         <!-- 组件是可以复用的，每个组件的数据是相互封闭之间没有任何影响 -->
         <button-counter title="title2"></button-counter>
 
@@ -30,17 +34,35 @@
             }
         },
         // 模板必须具备一个根节点,在同一个模板内使用多个HTML标签
+        // 把javascript脚本替换成可执行的脚本函数
+        // 3.在模板内可以通过slog标签声明一个组件的插槽，通过插槽可以插入任意的内容及标签   
         template: `<div>
                         <h1>hi...</h1>
-                        <button v-on:click="count++">{{title}}you click me {{count}}times</button>
+                        <button v-on:click="clickfun">{{title}}you click me {{count}}times</button>
+                        <slot></slot>
                    </div>
-                    `
+                    `,
+        // 使用method属性去声明对应的函数,使用$emit方法去触发一个事件
+        // $emit是第一个参数是事件名称， 第二个是可携带的参数
+        // 1. 当点击按钮时，会触发clicknow函数，并且携带count数据的值
+        methods: {
+            clickfun() {
+                this.count++;
+                this.$emit('clicknow',this.count)
+            }
+        },
     })
 
     var vm = new Vue({
         el: '#app',
         data: {
 
+        },
+        // 使用methods属性去声明clicknow方法
+        methods:{
+            clicknow(e) {
+                console.log(e);
+            }
         }
     })
  
