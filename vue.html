@@ -9,25 +9,42 @@
 </head>
 <body>
     <div id="app">
-        <!-- 传入一个对象的所有属性 -->
-        <blog-post
-            v-bind="post"></blog-post
-            >
-
-        <!-- 等价于 -->
-        <blog-post
-            v-bind:id="post.id"
-            v-bind:title="post.title">
-
-        </blog-post>
+        <!-- 单向数据流
+        所以的prop都是的其父子prop之间形成了一个单向下行绑定：父级prop的更新会向下流动到子组件中，
+        但是反过来不行，这样会防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解 -->
+            
+        <!-- 每次父级组件发生更新时，子组件中所有的prop都会刷新为最新的值，你不应该在子组件内部改变prop, -->
+        <!-- 如果如此，vue会在浏览器的控制台发出警告 -->
     </div>
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
+        // 常见的视图改变一个prop的情形
+        // 1.0 这个prop用来传递一个初始值，这个子组件接下来希望将其作为一个本地的prop数据来使用，
+        //     最好定义一个本地的data属性并将这个prop用作其初始值
+        var vm = new Vue({
+            el: '#app',
+            props: ['initialCounter'],
+            data() {
+                return {
+                    counter: this.initialCounter
+                }
+            }
+            
+        })
 
+
+        // 2.0 这个prop以一种原始的值传入且需要进行转换，
+        //     最好使用这个prop的值定义一个计算属性
 
         var vm = new Vue({
             el: '#app',
+            props: ['size'],
+            computed: {
+                normalizedSize() {
+                    return this.size.trim().toLowerCase()
+                }
+            },
             data: {
                 post: {
                     id: 1,
@@ -36,4 +53,8 @@
             }
             
         })
+
+        // 注意：
+        // 在JavaScript中对象和数组是通过引用传入的，所以对于一个数组或者对象类型的prop，在
+        // 子组件中改变这个对象或者数组本身将会影响到父组件的转态（父子各拿一把开启对象的钥匙）
     </script>
