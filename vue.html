@@ -10,24 +10,17 @@
 </head>
 <body>
     <div id="app">
+        <navgation-link >
+            你的资源有
+        </navgation-link>
 
-        <!-- 通过组件的属性为prop的属性赋值 -->
-        <!--  2.组件父级就可以通过数据绑定的方式去接收到$emit函数所触发的事件 -->
-
-        <button-counter title="title1" @clicknow="clicknow">
-            <h2>hi...hi </h2>
-        </button-counter>
-        <!-- 组件是可以复用的，每个组件的数据是相互封闭之间没有任何影响 -->
-        <button-counter title="title2"></button-counter>
-
-        <test></test>
+        <navgation-links >
+            你的资源
+        </navgation-links>
 
     </div>
 
     <script>
-        // 创建一个组件button-counter 
-        // {}表述数据和模板内容，模板内容是一个按钮，当按钮点击时，count数值会加一,为组件定义属性props
-        // 在模板内对props属性进行应用和渲染
     Vue.component('button-counter', {
         props: ['title'],
         data() {
@@ -35,24 +28,26 @@
                 count: 0
             }
         },
-        // 模板必须具备一个根节点,在同一个模板内使用多个HTML标签
-        // 把javascript脚本替换成可执行的脚本函数
-        // 3.在模板内可以通过slog标签声明一个组件的插槽，通过插槽可以插入任意的内容及标签   
         template: `<div>
                         <h1>hi...</h1>
                         <button v-on:click="clickfun">{{title}}you click me {{count}}times</button>
                         <slot></slot>
                    </div>
                     `,
-        // 使用method属性去声明对应的函数,使用$emit方法去触发一个事件
-        // $emit是第一个参数是事件名称， 第二个是可携带的参数
-        // 1. 当点击按钮时，会触发clicknow函数，并且携带count数据的值
-        methods: {
-            clickfun() {
-                this.count++;
-                this.$emit('clicknow',this.count)
+    })
+
+    Vue.component('navgation-link', {
+        data() {
+            return {
+
             }
         },
+        template: `<div>
+                        <h1>hi...</h1>
+                        <slot></slot>
+                   </div>
+                    `
+
     })
 
     var vm = new Vue({
@@ -62,21 +57,27 @@
         },
         // 使用methods属性去声明clicknow方法
         methods:{
-            clicknow(e) {
-                console.log(e);
-            }
+           
         },
-        // 注册局部组件名称test
+        // 注册局部组件名称NavgationLinks 驼峰式 对应 了 DOM中的navgation-links方式
         components: {
-            test: {
-                template: '<h2>局部组件</h2>',
-                // 声明组件属性
-                data:{
 
+            NavgationLinks : {
+                template: `<div>
+                         <h1>hi...</h1>
+                         <slot></slot>
+                        </div>
+                     `
+                            ,
+                // 声明组件属性，required function
+                data(){
+                    return {
+
+                    }
                 },
                 // 声明组件方法
                 methods: {
-                    
+
                 }
             }
         }
