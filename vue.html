@@ -15,19 +15,31 @@
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        // 通过babel 和 webpack 使用es6
-        import componentA from './ComponentA.vue'
+        // prop类型
+        //     字符串数组形式prop
+        //         props:['title', 'likes', 'isPublished', 'commentIds', 'author']
+        //     对象形式列出 prop
+        //         props: {
+        //                 title: String,
+        //                 likes: Number,
+        //                 isPublished: Boolean,
+        //                 commentIds: Array,
+        //                 author: Object,
+        //                 callback: Function,
+        //                 contactsPromise: Promise // or any other constructor
+        //             }
 
-        export default {
-            components: {
-                ComponentA,
-                // 等同于
-                ComponentA: ComponentA
-            }
-        }
-        // 这个变量名同时是：
-        // 1. 用在模板中的自定义元素的名称
-        // 2. 包含了这个组件选项的变量名
+        // 给 prop 传入一个静态的值：
+        // <blog-post title="My journey with Vue"></blog-post>
+
+        // // 也知道 prop 可以通过 v-bind 动态赋值，例如：
+        // // <!-- 动态赋予一个变量的值 -->
+        // <blog-post v-bind:title="post.title"></blog-post>
+
+        // // <!-- 动态赋予一个复杂表达式的值 -->
+        // <blog-post
+        // v-bind:title="post.title + ' by ' + post.author.name"
+        // ></blog-post>
 
         var vm = new Vue({
             el: '#app',
