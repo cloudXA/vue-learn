@@ -9,67 +9,31 @@
 </head>
 <body>
     <div id="app">
-        <!-- num1  -->
-        <!-- 在一个组件的根目录上直接监听一个原生事件，可以使用v-on .native -->
-        <base-input v-on:focus.native="onFocus"></base-input>
+        <!-- 我们可能需要对一个 prop 进行“双向绑定”。不幸的是，真正的双向绑定会带来维护上的问题，因为子组件可以修改父组件，且在父组件和子组件都没有明显的改动来源。 -->
+        <!-- 然后父组件可以监听那个事件并根据需要更新一个本地的数据属性。例如： -->
+        <text-document 
+                v-bind:title="doc.title"
+                v-on:update:title="doc.title = $event">
 
-       <!-- num2  -->
-        <!-- 当<base-input>做了重构后，根元素实际上是一个<label>元素 -->
-            <!-- 此刻.native监听器将默默失败，onFoucs处理函数不会如预期被调用 -->
-            <label>
-                {{ label }}
-                <input v-bind="$attrs"
-                        v-bind:value="value"
-                        v-on:input="$emit('input', $event.targe.value)"
-                > 
-            </label>
+        </text-document>
 
- 
+        <!-- 缩写 使用.sync修饰符TODO: prop数据双向绑定 -->
+        <text-document v-bind:title.sync="doc.title"></text-document>
 
+
+        <!-- 注意 -->
+        <!-- // .sync 修饰符和 v-bind 配合使用 
+        // 这样会把 doc 对象中的每一个属性 (如 title) 都作为一个独立的 prop 传进去，然后各自添加用于更新的 v-on 监听器。
+    //    <text-doucument v-bind.sync="doc"></text-doucument>
+    // 将 v-bind.sync 用在一个字面量的对象上，例如 v-bind.sync=”{ title: doc.title }”，是无法正常工作的，因为在解析一个像这样的复杂表达式的时候，有很多边缘情况需要考虑。 -->
     </div>
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-
-        // 解决办法 $listeners 属性， 配合v-on="$listeners"将所有的事件监听器指向这个组件的特定的子元素，
-        // 对于类似<input>的你希望它可以配合v-model工作的组件来说，为这些监听器创建一个类似
-        // 下属inputListeners的计算属性通常是非常有用的
-        // TODO: 合适场景下试着使用掌握
-
-        // 以下，<base-input>组件是一个完全透明的包裹器，可以像一个普通的<input>元素一样使用
-        // 所有跟它相同的attribute和监听器都可以工作了
-        Vue.component('base-input', {
-            inheritAttrs: false,
-            props: ['label', 'value'],
-            computed: {
-                inputListeners() {
-                    var vm = this
-                    // Object.assign将所有的对象合并为一个新对象 
-                    return Object.assign({},
-                        // 我们从父级添加所有的监听器
-                        this.$listners,
-                        // 然后我们添加自定义监听器，
-                        // 或者覆写一些监听器的行为
-                        {
-                            // 这里确保组件配合 'v-model'的工作 
-                            input: function (event) {
-                                vm.$emit('input', event.targe.value)
-                            }
-                        }
-                    )
-                }
-            }, 
-            template: `
-                    <label>
-                        {{label}}
-                        <input
-                            v-bind="$attrs"
-                            v-bind:value="value"
-                            v-on="inputListeners"
-                    >
-                    </label>
-                `               
-        })
+        // TODO: 伪代码
+        // 存在于子组件中
+        // <!-- 这也是为什么我们推荐以 update:myPropName 的模式触发事件取而代之。举个例子，在一个包含 title prop 的假设的组件中，我们可以用以下方法表达对其赋新值的意图： -->
+        this.$emit('update:title', newTitle)
 
         var vm = new Vue({
             el: '#app',
@@ -80,4 +44,13 @@
                 'base-chckbox': base-chckbox
             }
         })
+
+        // 注意
+        // .sync 修饰符 v-bind 不能和表达式一起使用
+        // v-bind:title.sync="doc.title" + '!'" 无效
+        // 你只能提供想要绑定的属性名 如v-model 
+
+
+ 
+
     </script>
