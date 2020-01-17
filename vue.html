@@ -24,5 +24,24 @@
 
         // 然后这个data-data-picker="acitived" attribute就会自动添加到<bootsrap-data-input>的根元素上
         // TODO: 
+        // 不同过prop方式，直接给第三方插件传递值
             <bootstrap-data-input data-data-picker="actived"></bootstrap-data-input>
+
+        // 当<bootstrap-data-input>的模板是这样时
+
+            // num 1 组件的模板内设置好的class
+            <input type="date" class="form-control">
+
+        // 给第三方插件定制一个主题
+
+            // num2 从组件的父级传入的
+        <bootstrap-data-input data-data-picker="actived"
+                              class="date-picker-theme-dark">
+        </bootstrap-data-input>
+        
+        // 对于大多数attribute，从外部提供给组件的值会被替换组件内部设置好的值。
+        // 但是，class 和 style 会合并起来，最终的值是
+        // form-control date-picker-theme-dark 
+
+        
     </script>
