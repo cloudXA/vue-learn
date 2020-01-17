@@ -9,39 +9,35 @@
 </head>
 <body>
     <div id="app">
-        
+
+        <!-- TODO: -->
+        <!-- 此模式允许你在使用基础组件的时候更像是使用原始的html元素，而不会担心呢个元素是真正的根元素 -->
+        <base-input 
+                v-model="username"
+                required
+                placeholder="enter your username"></base-input>
     </div>
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        // 一个非prop的attribute是指传向一个组件，但是该组件并没有相应prop定义的attribute
+        // 不希望组件的根元素继承attribute，你可以在组件的选项中设置inheritAttrs: false 
+        // Vue.component('my-component', {
+        //     inheritAttrs: false,
+        // })        
 
-        // 显式定义的prop适用于向一个子组件传入信息，然而，优势并不能预见组件hi被用于怎样的场景，
-        // 所以组件可以接受任意的attribute，而这些attribute会被添加到这个组件的根元素上
-
-        // 通过bootstrap插件使用第三方插件<bootstrap-data-input>组件，这个插件需要在其<input>上
-        //     用到一个data-data-picker attribute,可以如下
-
-        // 然后这个data-data-picker="acitived" attribute就会自动添加到<bootsrap-data-input>的根元素上
-        // TODO: 
-        // 不同过prop方式，直接给第三方插件传递值
-            <bootstrap-data-input data-data-picker="actived"></bootstrap-data-input>
-
-        // 当<bootstrap-data-input>的模板是这样时
-
-            // num 1 组件的模板内设置好的class
-            <input type="date" class="form-control">
-
-        // 给第三方插件定制一个主题
-
-            // num2 从组件的父级传入的
-        <bootstrap-data-input data-data-picker="actived"
-                              class="date-picker-theme-dark">
-        </bootstrap-data-input>
-        
-        // 对于大多数attribute，从外部提供给组件的值会被替换组件内部设置好的值。
-        // 但是，class 和 style 会合并起来，最终的值是
-        // form-control date-picker-theme-dark 
-
-        
+        // 在此基础上，配合inheritAttrs: false 和 $attrs 你可以手动决定这些attribute会被赋予那个元素
+        // 在撰写基础组件是用到 
+        Vue.component('base-input', {
+            inheritAttrs: false,
+            props: ['label', 'value'],
+            template: `
+                <label>
+                    {{ label }}
+                    <input
+                        v-bind="$attrs"
+                        v-bind:value="value"
+                        v-on:input="$emit('input', $event.target.value)"
+                </label>
+            `
+        })
     </script>
