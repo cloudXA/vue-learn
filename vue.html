@@ -9,11 +9,14 @@
 </head>
 <body>
     <div id="app">
-        <!-- 事件名始终推荐kebab-case驼峰写法 -->
+        <!-- num1  -->
+        <!-- 在一个组件的根目录上直接监听一个原生事件，可以使用v-on .native -->
+        <base-input v-on:focus.native="onFocus"></base-input>
 
-        <!-- lovingVue的值将会传入到这个名为checked的prop中，同时<base-checkbox>触发一个 -->
-        <!-- 事件并附带一个新的值的时候，这个lovingVue的属性会被更新 -->
-        <base-checkbox v-model="lovingVue"></base-checkbox>
+
+
+ 
+
     </div>
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
