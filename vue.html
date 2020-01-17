@@ -9,44 +9,26 @@
 </head>
 <body>
     <div id="app">
-        <!-- 当用在组件上时，v-model则会这样
-              -->
-        <!-- <custom-input 
-            v-bind:value="searchText"
-            v-on:input="searchText = $event">
-        </custom-input> -->
-
-        <!-- v-model 经过了自定义的组件一番处理后，成功的实现了数据双向绑定 -->
-        <custom-input v-model="searchText">
-
-        </custom-input>
-
-
+        <alert-box>
+            Something bad happende 
+        </alert-box>
     </div>
 
-
-
     <script src="./node_modules/./vue/dist/vue.js"></script>
+
     <script>
-        // 组件内的input必须
-            // 1. 将其value attribute 绑定到一个名叫value的prop上
-            // 2. 在其input 事件被触发时， 将新的值通过自定义的input事件抛出
-        Vue.component('custom-input', {
-            props: ['value'],
+        Vue.component('alert-box', {
             template: `
-                    <input 
-                        v-bind:value="value"
-                        v-on:input="$emit('input', $event.target.value)"
-                    >
-                `
+                <div class="demo-alert-box">
+                    <strong>错误</strong>
+                    <slot></slot>
+                </div>
+                    `
         })
         var vm = new Vue({
-            el: "#app",
+            el: '#app',
             data: {
-              searchText: ''
-            },
                
+            }
+            
         })
-    </script>
-</body>
-</html>
