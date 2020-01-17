@@ -52,5 +52,19 @@
             // 当prop验证失败的时候，vue将会产生一个控制台的警告
             // 注意哪些prop会在一个组件实例创建之前进行验证，所以实例的属性（data computed）在
             // default 或者 validator函数是不可用的
+
+            
+
+        })
+
+        // 验证author prop 的值是否符合new Person 创建的TODO:
+        function Person (firstName, lastName) {
+                this.firstName = firstName
+                this.lastName = lastName
+            }
+        Vue.component('blog-post', {
+            props: {
+                author: Person 
+            }
         })
     </script>
