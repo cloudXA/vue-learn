@@ -4,53 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/./vue/dist/vue.js"></script>
     <title>Document</title>
 
 </head>
 <body>
     <div id="app">
-        <!-- 我们可能需要对一个 prop 进行“双向绑定”。不幸的是，真正的双向绑定会带来维护上的问题，因为子组件可以修改父组件，且在父组件和子组件都没有明显的改动来源。 -->
-        <!-- 然后父组件可以监听那个事件并根据需要更新一个本地的数据属性。例如： -->
-        <text-document 
-                v-bind:title="doc.title"
-                v-on:update:title="doc.title = $event">
 
-        </text-document>
+        <!-- 通过组件的属性为prop的属性赋值 -->
+        <button-counter title="title1"></button-counter>
+        <!-- 组件是可以复用的，每个组件的数据是相互封闭之间没有任何影响 -->
+        <button-counter title="title2"></button-counter>
 
-        <!-- 缩写 使用.sync修饰符TODO: prop数据双向绑定 -->
-        <text-document v-bind:title.sync="doc.title"></text-document>
-
-
-        <!-- 注意 -->
-        <!-- // .sync 修饰符和 v-bind 配合使用 
-        // 这样会把 doc 对象中的每一个属性 (如 title) 都作为一个独立的 prop 传进去，然后各自添加用于更新的 v-on 监听器。
-    //    <text-doucument v-bind.sync="doc"></text-doucument>
-    // 将 v-bind.sync 用在一个字面量的对象上，例如 v-bind.sync=”{ title: doc.title }”，是无法正常工作的，因为在解析一个像这样的复杂表达式的时候，有很多边缘情况需要考虑。 -->
     </div>
-    <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        // TODO: 伪代码
-        // 存在于子组件中
-        // <!-- 这也是为什么我们推荐以 update:myPropName 的模式触发事件取而代之。举个例子，在一个包含 title prop 的假设的组件中，我们可以用以下方法表达对其赋新值的意图： -->
-        this.$emit('update:title', newTitle)
-
-        var vm = new Vue({
-            el: '#app',
-            data: {
-
-            },
-            components: {
-                'base-chckbox': base-chckbox
+        // 创建一个组件button-counter 
+        // {}表述数据和模板内容，模板内容是一个按钮，当按钮点击时，count数值会加一,为组件定义属性props
+        // 在模板内对props属性进行应用和渲染
+    Vue.component('button-counter', {
+        props: ['title'],
+        data() {
+            return {
+                count: 0
             }
-        })
+        },
+        // 模板必须具备一个根节点,在同一个模板内使用多个HTML标签
+        template: `<div>
+                        <h1>hi...</h1>
+                        <button v-on:click="count++">{{title}}you click me {{count}}times</button>
+                   </div>
+                    `
+    })
 
-        // 注意
-        // .sync 修饰符 v-bind 不能和表达式一起使用
-        // v-bind:title.sync="doc.title" + '!'" 无效
-        // 你只能提供想要绑定的属性名 如v-model 
+    var vm = new Vue({
+        el: '#app',
+        data: {
 
-
+        }
+    })
  
 
     </script>
