@@ -14,57 +14,15 @@
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-    //   我们可以为组件的prop指定验证要求，你知道的类型，如果有一个需求没有被满足，vue会在浏览器中警告你
-        // 定制prop的验证方式，你可以为props中的值提供一个带有验证需求的对象，而非字符串数组
+        // 一个非prop的attribute是指传向一个组件，但是该组件并没有相应prop定义的attribute
 
-        Vue.component('my-component', {
-            props: {
-                // 基础的类型检查('null''undefiend'会通过任何类型验证)
-                propA: Number,
-                // 多个可能的类型
-                propB: [String, Number],
-                // 必填的字符串
-                propC: {
-                    type: String,
-                    required: true
-                },
-                // 带有默认值的数字
-                propD: {
-                    type: Number,
-                    default: 100
-                },
-                // 带有默认值的对象
-                propE: {
-                    type: Object,
-                    // 对象或数组默认值必须从一个工厂函数获取
-                    default: function () {
-                        return {message: 'hello'}
-                    }
-                },
-                // 自定义验证函数
-                propF: {
-                    validator: function (value) {
-                        // 这个值必须匹配下列字符串中的一个
-                        return ['success', 'warning', 'danger'].indexOf(value) !== -1
-                    }
-                }
-            }
-            // 当prop验证失败的时候，vue将会产生一个控制台的警告
-            // 注意哪些prop会在一个组件实例创建之前进行验证，所以实例的属性（data computed）在
-            // default 或者 validator函数是不可用的
+        // 显式定义的prop适用于向一个子组件传入信息，然而，优势并不能预见组件hi被用于怎样的场景，
+        // 所以组件可以接受任意的attribute，而这些attribute会被添加到这个组件的根元素上
 
-            
+        // 通过bootstrap插件使用第三方插件<bootstrap-data-input>组件，这个插件需要在其<input>上
+        //     用到一个data-data-picker attribute,可以如下
 
-        })
-
-        // 验证author prop 的值是否符合new Person 创建的TODO:
-        function Person (firstName, lastName) {
-                this.firstName = firstName
-                this.lastName = lastName
-            }
-        Vue.component('blog-post', {
-            props: {
-                author: Person 
-            }
-        })
+        // 然后这个data-data-picker="acitived" attribute就会自动添加到<bootsrap-data-input>的根元素上
+        // TODO: 
+            <bootstrap-data-input data-data-picker="actived"></bootstrap-data-input>
     </script>
