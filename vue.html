@@ -9,22 +9,20 @@
 </head>
 <body>
     <div id="app">
-        <alert-box>
-            Something bad happende 
-        </alert-box>
+       <!-- 组件之间切换 -->
+       <!-- 通过vue的<component>元素加一个特殊的is attribute来实现 -->
+        <!-- 组件会在componentId改变时改变 -->
+        <component :is="componentId"></component>
+
+        <!-- componentId: 还包括
+            已注册的名字
+            一个组件的选项对象 -->
     </div>
 
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        Vue.component('alert-box', {
-            template: `
-                <div class="demo-alert-box">
-                    <strong>错误</strong>
-                    <slot></slot>
-                </div>
-                    `
-        })
+        
         var vm = new Vue({
             el: '#app',
             data: {
