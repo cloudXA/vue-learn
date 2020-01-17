@@ -13,7 +13,16 @@
         <!-- 在一个组件的根目录上直接监听一个原生事件，可以使用v-on .native -->
         <base-input v-on:focus.native="onFocus"></base-input>
 
-
+       <!-- num2  -->
+        <!-- 当<base-input>做了重构后，根元素实际上是一个<label>元素 -->
+            <!-- 此刻.native监听器将默默失败，onFoucs处理函数不会如预期被调用 -->
+            <label>
+                {{ label }}
+                <input v-bind="$attrs"
+                        v-bind:value="value"
+                        v-on:input="$emit('input', $event.targe.value)"
+                > 
+            </label>
 
  
 
@@ -21,25 +30,45 @@
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        // TODO: FIX 
 
+        // 解决办法 $listeners 属性， 配合v-on="$listeners"将所有的事件监听器指向这个组件的特定的子元素，
+        // 对于类似<input>的你希望它可以配合v-model工作的组件来说，为这些监听器创建一个类似
+        // 下属inputListeners的计算属性通常是非常有用的
+        // TODO: 合适场景下试着使用掌握
 
-        Vue.component('base-chckbox', {
-            model: {
-                prop: 'checked',
-                event: 'change'
-            },
-            // 任然需要在组件的props选项里声明checked这个prop
-            props: {
-                checked: Boolean 
-            },
+        // 以下，<base-input>组件是一个完全透明的包裹器，可以像一个普通的<input>元素一样使用
+        // 所有跟它相同的attribute和监听器都可以工作了
+        Vue.component('base-input', {
+            inheritAttrs: false,
+            props: ['label', 'value'],
+            computed: {
+                inputListeners() {
+                    var vm = this
+                    // Object.assign将所有的对象合并为一个新对象 
+                    return Object.assign({},
+                        // 我们从父级添加所有的监听器
+                        this.$listners,
+                        // 然后我们添加自定义监听器，
+                        // 或者覆写一些监听器的行为
+                        {
+                            // 这里确保组件配合 'v-model'的工作 
+                            input: function (event) {
+                                vm.$emit('input', event.targe.value)
+                            }
+                        }
+                    )
+                }
+            }, 
             template: `
-                    <input 
-                        type="checkbox"
-                        v-bind:checked="checked"
-                        v-on:change="$emit('change', $event.target.checked)"
+                    <label>
+                        {{label}}
+                        <input
+                            v-bind="$attrs"
+                            v-bind:value="value"
+                            v-on="inputListeners"
                     >
-                `
+                    </label>
+                `               
         })
 
         var vm = new Vue({
