@@ -9,35 +9,43 @@
 </head>
 <body>
     <div id="app">
+        <!-- 事件名始终推荐kebab-case驼峰写法 -->
 
-        <!-- TODO: -->
-        <!-- 此模式允许你在使用基础组件的时候更像是使用原始的html元素，而不会担心呢个元素是真正的根元素 -->
-        <base-input 
-                v-model="username"
-                required
-                placeholder="enter your username"></base-input>
+        <!-- lovingVue的值将会传入到这个名为checked的prop中，同时<base-checkbox>触发一个 -->
+        <!-- 事件并附带一个新的值的时候，这个lovingVue的属性会被更新 -->
+        <base-checkbox v-model="lovingVue"></base-checkbox>
     </div>
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        // 不希望组件的根元素继承attribute，你可以在组件的选项中设置inheritAttrs: false 
-        // Vue.component('my-component', {
-        //     inheritAttrs: false,
-        // })        
+        // TODO: FIX 
 
-        // 在此基础上，配合inheritAttrs: false 和 $attrs 你可以手动决定这些attribute会被赋予那个元素
-        // 在撰写基础组件是用到 
-        Vue.component('base-input', {
-            inheritAttrs: false,
-            props: ['label', 'value'],
+
+        Vue.component('base-chckbox', {
+            model: {
+                prop: 'checked',
+                event: 'change'
+            },
+            // 任然需要在组件的props选项里声明checked这个prop
+            props: {
+                checked: Boolean 
+            },
             template: `
-                <label>
-                    {{ label }}
-                    <input
-                        v-bind="$attrs"
-                        v-bind:value="value"
-                        v-on:input="$emit('input', $event.target.value)"
-                </label>
-            `
+                    <input 
+                        type="checkbox"
+                        v-bind:checked="checked"
+                        v-on:change="$emit('change', $event.target.checked)"
+                    >
+                `
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            components: {
+                'base-chckbox': base-chckbox
+            }
         })
     </script>
