@@ -20,6 +20,8 @@
         <!-- 组件是可以复用的，每个组件的数据是相互封闭之间没有任何影响 -->
         <button-counter title="title2"></button-counter>
 
+        <test></test>
+
     </div>
 
     <script>
@@ -62,6 +64,20 @@
         methods:{
             clicknow(e) {
                 console.log(e);
+            }
+        },
+        // 注册局部组件名称test
+        components: {
+            test: {
+                template: '<h2>局部组件</h2>',
+                // 声明组件属性
+                data:{
+
+                },
+                // 声明组件方法
+                methods: {
+                    
+                }
             }
         }
     })
