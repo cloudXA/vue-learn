@@ -11,52 +11,13 @@
 <body>
     <div id="app">
 
-        <async-example></async-example>
+        <posts></posts>
 
     </div>
 
     <script>
 
-        // 应用背景： 
-        //     在大型应用中，我们可能需要将应用分隔成小一些的代码块，并且只在需要的时候才从服务器
-        //     加载一个模块，为了简化。Vue允许你以一个工厂函数的方式定义你的组件，这个工厂函数会
-        //     异步解析你的组件定义。vue只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把
-        //     结果缓存起来供未来重渲染
-    Vue.component('async-example', function (resolve, reject) {
-        setTimeout(() => {
-            // 向resolve回调传递组件定义
-            // 解释：
-            //     工厂函数会接受一个resolve回调，这个回调函数会在你从服务器得到组件定义的时候被调用，
-            //     也可调用reject(reason)来表示加载失败，这里的settimeout是为了演示用到的，如何获取
-            //     组件取决于自己，一个推荐的做法是将异步组件和webpack的code-splitting功能配合使用
-            resolve({
-                template: '<div>I am async! 我是异步的</div>'
-            })
-        }, 1000)
-    })
-
-
-    // webpack 的code-splitting功能实现的
-    // 另一种实现---借助webpack
-    // Vue.component('async-webpack-example', function (resolve) {
-    //     // 这个特殊的 `require` 语法将会告诉 webpack
-    //     // 自动将你的构建代码切割成多个包，这些包
-    //     // 会通过 Ajax 请求加载
-    //     require(['./src/test.vue'], resolve)
-    // })
-
-    // 在一中实现---webpack + es6 
-    // Vue.component(
-    //     'async-webpack-example',
-    //     // 这个 `import` 函数会返回一个 `Promise` 对象。
-    //     () => import('./src/test.vue')
-    // )
-
-
-
-
-
-
+// Vue根实例 可以通过$root属性进行访问
     var vm = new Vue({
         el: '#app',
         data: {
@@ -66,34 +27,38 @@
         },
         methods: {
             toggle(target) {
-                this.target = target;
+                return 'methods was called'
             } 
         },
-
-        // 另外的局部组件使用Promise函数
-        // comments: {
-        //     'my-component': () => import('./my-async-component')
-        // }
+        computed: {
+            bar() {
+                return 1 + 1 
+            }
+        },
+        // 所有的子组件都可以将这个实例作为一个全局 store 来访问或使用。
+        components: {
+            posts: {
+                template: '<h2>post组件{{post}} -- {{bar}} --- {{method}}</h2>',
+                data() {
+                    // 写入根组件的数据
+                    this.$root.posts = 21;
+                    return {
+                        // 获取根组件的数据
+                        post: this.$root.posts,
+                        // 访问根组件的计算属性
+                        bar: this.$root.bar,
+                        // 调用根组件的方法
+                        method: this.$root.toggle()
+                    }
+                    
+                },
+                
+            }
+        }
         
     })
+    注意事项
+        // 对于demo或者小型的由少量组件的应用来说是很方便的，但是大型应用应该使用Vuex管理应用状态
 
-
-
-    // 处理加载状态
-    // 这里的异步组件工厂函数也可以返回一个如下格式的对象：如果在Vue Router的路由组件中使用的话，
-    // 需要使用Vue Router 2.4.0 +
-    const AsyncComponent = () => ({
-        // 需要加载的组件（应该是promise对象）
-        component: import('./src/test.vue'),
-        // 异步组件加载时使用的组件
-        loading: LoadingComponent,
-        // 加载失败时使用的组件
-        error: ErrorComponent,
-        // 展示加载时组件的延时时间，默认是200
-        delay: 200,
-        // 如果提供了超长时间且组件加载也超时了
-        // 则使用加载失败时使用的组件，默认值是   'Infinity'
-        timeout: 3000 
-    })
         
     </script>
