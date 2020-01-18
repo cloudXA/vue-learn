@@ -18,9 +18,24 @@
         <!-- num 2 绑定在 <slot> 元素上的 attribute 被称为插槽 prop。现在在父级作用域中，我们可以使用带值的 v-slot 来定义我们提供的插槽 prop 的名字： -->
 
         <!-- 让插槽的内容能够访问子组件中才有的数据 -->
+
+        <!-- 注意默认插槽的缩写语法不能和具名插槽混用，因为它会导致作用域不明确： -->
+        <!-- 不带参数的 v-slot 被假定对应默认插槽 -->
         <navgation-link url="url" v-bind:title="title">
-            <template v-slot:default="slotData">
+
+            <!-- num 1  -->
+            <!-- 这种写法还可以更简单。就像假定未指明的内容对应默认插槽一样，不带参数的 v-slot 被假定对应默认插槽： -->
+              <!-- <template v-slot:default="slotData">
                 {{ slotData.user.name }}
+              </template> -->
+
+
+              <template v-slot:default="slotData">
+                {{ slotData.user.name }}
+              </template>
+
+              <template v-slot:other="otherSlotProps">
+                {{ otherSlotProps.other.name }}
               </template>
             
         </navgation-link>
@@ -43,15 +58,26 @@
                 slotData: {
                     name: '李四guang',
                     age: 18
+                },
+                otherSlotProps: {
+                    name: '石油地质'
                 }
             }
         },
     //   slot具有一个特殊的attribute： name 这个attribute可以用来定义额外的插槽，一个不带 name 的 <slot> 出口会带有隐含的名字“default”。
         // num1将 user 作为 <slot> 元素的一个 attribute 绑定上去
+
+            // num 2 
+     // 只要出现多个插槽，请始终为所有的插槽使用完整的基于 <template> 的语法：  
         template: `<div class="container">
-                        <slot v-bind:user="slotData">
+                        <slot v-bind:user="slotData" name="default">
                             {{ slotData.name }}
                         </slot>
+
+                        <slot v-bind:other="otherSlotProps" name="other">
+                            {{ otherSlotProps.name }}
+                        </slot>
+
                     </div>
                     `
 
@@ -71,7 +97,7 @@
             NavgationLinks : {
                 template: `<div>
                          <h1>hi...</h1>
-                         <slot>作为备胎，备胎转正了</slot>
+                         <slot></slot>
                         </div>
                      `
                             ,
