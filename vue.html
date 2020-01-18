@@ -10,55 +10,54 @@
 </head>
 <body>
     <div id="app">
-
-        <posts></posts>
+        <!-- 父级  -->
+        <navgation-link  ref="usernameInput">
+        </navgation-link>
 
     </div>
 
+    <template id="child">
+        <div>
+            <input ref="input">
+        </div>
+           
+    </template>
+
     <script>
 
-// Vue根实例 可以通过$root属性进行访问
-    var vm = new Vue({
-        el: '#app',
-        data: {
-            posts: "posts",
-            archive: "archive",
-            target: ""
-        },
-        methods: {
-            toggle(target) {
-                return 'methods was called'
-            } 
-        },
-        computed: {
-            bar() {
-                return 1 + 1 
-            }
-        },
-        // 所有的子组件都可以将这个实例作为一个全局 store 来访问或使用。
-        components: {
-            posts: {
-                template: '<h2>post组件{{post}} -- {{bar}} --- {{method}}</h2>',
-                data() {
-                    // 写入根组件的数据
-                    this.$root.posts = 21;
-                    return {
-                        // 获取根组件的数据
-                        post: this.$root.posts,
-                        // 访问根组件的计算属性
-                        bar: this.$root.bar,
-                        // 调用根组件的方法
-                        method: this.$root.toggle()
-                    }
-                    
-                },
+
+    // 全局组件
+    Vue.component('navgation-link', {
+        data() {
+            return {
                 
             }
+        },
+        template: "#child",
+        methods: {
+            // 用来从父组件聚焦输入框
+            focus() {
+                this.$refs.input.focus()
+            }
         }
-        
-    })
-    注意事项
-        // 对于demo或者小型的由少量组件的应用来说是很方便的，但是大型应用应该使用Vuex管理应用状态
+       
 
-        
+    })
+    // TODO: 代码未实现自动聚焦
+    // $refs 只会在组件渲染完成之后生效，并且它们不是响应式的。这仅作为一个用于直接操作子组件的“逃生舱”——你应该避免在模板或计算属性中访问 $refs。
+    this.$refs.usernameInput.focus();
+
+    var vm = new Vue({
+        el: '#app',
+
+        data: {
+            
+        },
+        methods:{
+
+        },
+
+    })
+ 
+
     </script>
