@@ -28,15 +28,23 @@
               <!-- <template v-slot:default="slotData">
                 {{ slotData.user.name }}
               </template> -->
-
-
-              <template v-slot:default="slotData">
-                {{ slotData.user.name }}
+              <!-- 作用域插槽的内部工作原理是将你的插槽内容包括在一个传入单个单数的函数里 -->
+              <!-- 这意味着v-slot的值实际上是任何能够作为函数定义中的参数的JavaScript表达式
+            可以使用es6解构来传入具体的prop,尤其当插槽提供了多个prop的时候 -->
+              <template v-slot:other="{ other }">
+                {{ other.name }}
               </template>
 
-              <template v-slot:other="otherSlotProps">
-                {{ otherSlotProps.other.name }}
+              <!-- 将user重命名为person -->
+              <template v-slot="{ user : person }">
+                {{ person.name }}
               </template>
+
+              <!-- 定义后备内容，用于插槽prop是undefiend的情形 -->
+              <template v-slot:nothing="{ nothing = { name: 'Guest' } }">
+                {{ nothing.name }}
+              </template>
+             
             
         </navgation-link>
 
@@ -61,7 +69,11 @@
                 },
                 otherSlotProps: {
                     name: '石油地质'
-                }
+                },
+                // 此处插槽prop是undefined的情形
+                // nothing: {
+                //     name: undefined
+                // }
             }
         },
     //   slot具有一个特殊的attribute： name 这个attribute可以用来定义额外的插槽，一个不带 name 的 <slot> 出口会带有隐含的名字“default”。
@@ -71,11 +83,15 @@
      // 只要出现多个插槽，请始终为所有的插槽使用完整的基于 <template> 的语法：  
         template: `<div class="container">
                         <slot v-bind:user="slotData" name="default">
-                            {{ slotData.name }}
+                            
                         </slot>
 
                         <slot v-bind:other="otherSlotProps" name="other">
-                            {{ otherSlotProps.name }}
+                           
+                        </slot>
+
+                        <slot v-bind:nothing="nothing" name="nothing">
+                           
                         </slot>
 
                     </div>
