@@ -13,19 +13,12 @@
         <!-- 父级  -->
         <!-- 我们可以在一个 <template> 元素上使用 v-slot 指令，并以 v-slot 的参数的形式提供其名称： -->
         <!-- 现在 <template> 元素中的所有内容都将会被传入相应的插槽。任何没有被包裹在带有 v-slot 的 <template> 中的内容都会被视为默认插槽的内容。 -->
+            <!-- 注意 v-slot 只能添加在 <template> 上  -->
+        <!-- 为了让user在父级的插槽可以使用，我们可以将user作为slot元素的一个attribute绑定上去 -->
         <navgation-link url="url" v-bind:title="title">
-            <template v-slot:header>
-                <h1>
-                    这是页面之标题
-                </h1>
-            </template>
-
-            <p>这是一个段落--你好</p>
-            <p>这是另一个段落--尼玛丝带</p>
-
-            <template v-slot:footer>
-                @footer 2020 版权所有
-            </template>
+           
+              <h1 slot-scope="abc">{{abc.name}}</h1>
+            
         </navgation-link>
 
         <navgation-links >
@@ -42,13 +35,17 @@
                 url: '/components',
                 colorSetting: {
                     color: 'red'
+                },
+                slotData: {
+                    name: '李四guang',
+                    age: 18
                 }
             }
         },
     //   slot具有一个特殊的attribute： name 这个attribute可以用来定义额外的插槽，一个不带 name 的 <slot> 出口会带有隐含的名字“default”。
         template: `<div class="container">
                         <header>
-                            <slot name="header"></slot>
+                            <slot v-bind="slotData"/>
                         </header>
                     
                         <main>
@@ -66,9 +63,6 @@
     var vm = new Vue({
         el: '#app',
         data: {
-            user: {
-                name: '张三'
-            },
             title: '你是电逆时光' 
 
         },
