@@ -10,8 +10,9 @@
 </head>
 <body>
     <div id="app">
-        <navgation-link url="">
-            你的资源呦
+        <!-- 父级  -->
+        <navgation-link url="url" v-bind:title="title">
+            logging {{user.name}}
         </navgation-link>
 
         <navgation-links >
@@ -25,31 +26,21 @@
     </div>
 
     <script>
-    Vue.component('button-counter', {
-        props: ['title'],
-        data() {
-            return {
-                count: 0
-            }
-        },
-        template: `<div>
-                        <h1>hi...</h1>
-                        <button v-on:click="clickfun">{{title}}you click me {{count}}times</button>
-                        <slot></slot>
-                   </div>
-                    `,
-    })
-
+    // 全局组件
     Vue.component('navgation-link', {
         data() {
             return {
-                url: '/src'
+                url: '/components',
+                colorSetting: {
+                    color: 'red'
+                }
             }
         },
         // 当组件渲染的时候，slot将会被替换为  你的资源呦 
         // 插槽的内容可以包含任意模板代码
+        // num1 子模板里的内容都是在子作用域中编译的
         template: `<a
-                        v-bind:href="url"
+                        v-bind:href="url" :style="[colorSetting]"
                         class="nav-link"
                     >
                         <slot></slot>
@@ -60,7 +51,12 @@
 
     var vm = new Vue({
         el: '#app',
+// num2 父级模板里的所有内容都是父级作用域中编译的 父级
         data: {
+            user: {
+                name: '张三'
+            },
+            title: '你是电逆时光' 
 
         },
         // 使用methods属性去声明clicknow方法
