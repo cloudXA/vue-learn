@@ -31,7 +31,10 @@
               <!-- 作用域插槽的内部工作原理是将你的插槽内容包括在一个传入单个单数的函数里 -->
               <!-- 这意味着v-slot的值实际上是任何能够作为函数定义中的参数的JavaScript表达式
             可以使用es6解构来传入具体的prop,尤其当插槽提供了多个prop的时候 -->
-              <template v-slot:other="{ other }">
+
+            <!-- 动态插槽名 -->
+            <!-- 如何将dynamicSlotName与实例属性值相对应，需要进一步学习TODO:  -->
+              <template v-slot:[dynamicSlotName]="{ other }">
                 {{ other.name }}
               </template>
 
@@ -60,6 +63,7 @@
         data() {
             return {
                 url: '/components',
+                dynamicSlotName: "other",
                 colorSetting: {
                     color: 'red'
                 },
@@ -76,6 +80,7 @@
                 // }
             }
         },
+        
     //   slot具有一个特殊的attribute： name 这个attribute可以用来定义额外的插槽，一个不带 name 的 <slot> 出口会带有隐含的名字“default”。
         // num1将 user 作为 <slot> 元素的一个 attribute 绑定上去
 
@@ -102,7 +107,8 @@
     var vm = new Vue({
         el: '#app',
         data: {
-            title: '你是电逆时光' 
+            title: '你是电逆时光',
+
 
         },
         methods:{
