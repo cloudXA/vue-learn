@@ -15,9 +15,13 @@
         <!-- 现在 <template> 元素中的所有内容都将会被传入相应的插槽。任何没有被包裹在带有 v-slot 的 <template> 中的内容都会被视为默认插槽的内容。 -->
             <!-- 注意 v-slot 只能添加在 <template> 上  -->
         <!-- 为了让user在父级的插槽可以使用，我们可以将user作为slot元素的一个attribute绑定上去 -->
+        <!-- num 2 绑定在 <slot> 元素上的 attribute 被称为插槽 prop。现在在父级作用域中，我们可以使用带值的 v-slot 来定义我们提供的插槽 prop 的名字： -->
+
+        <!-- 让插槽的内容能够访问子组件中才有的数据 -->
         <navgation-link url="url" v-bind:title="title">
-           
-              <h1 slot-scope="abc">{{abc.name}}</h1>
+            <template v-slot:default="slotData">
+                {{ slotData.user.name }}
+              </template>
             
         </navgation-link>
 
@@ -43,18 +47,11 @@
             }
         },
     //   slot具有一个特殊的attribute： name 这个attribute可以用来定义额外的插槽，一个不带 name 的 <slot> 出口会带有隐含的名字“default”。
+        // num1将 user 作为 <slot> 元素的一个 attribute 绑定上去
         template: `<div class="container">
-                        <header>
-                            <slot v-bind="slotData"/>
-                        </header>
-                    
-                        <main>
-                            <slot></slot>
-                        </main>
-
-                        <footer>
-                            <slot name="footer"></slot>
-                        </footer>
+                        <slot v-bind:user="slotData">
+                            {{ slotData.name }}
+                        </slot>
                     </div>
                     `
 
