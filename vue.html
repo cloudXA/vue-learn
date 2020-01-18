@@ -11,8 +11,21 @@
 <body>
     <div id="app">
         <!-- 父级  -->
+        <!-- 我们可以在一个 <template> 元素上使用 v-slot 指令，并以 v-slot 的参数的形式提供其名称： -->
+        <!-- 现在 <template> 元素中的所有内容都将会被传入相应的插槽。任何没有被包裹在带有 v-slot 的 <template> 中的内容都会被视为默认插槽的内容。 -->
         <navgation-link url="url" v-bind:title="title">
-            logging {{user.name}}
+            <template v-slot:header>
+                <h1>
+                    这是页面之标题
+                </h1>
+            </template>
+
+            <p>这是一个段落--你好</p>
+            <p>这是另一个段落--尼玛丝带</p>
+
+            <template v-slot:footer>
+                @footer 2020 版权所有
+            </template>
         </navgation-link>
 
         <navgation-links >
@@ -32,22 +45,26 @@
                 }
             }
         },
-        // 当组件渲染的时候，slot将会被替换为  你的资源呦 
-        // 插槽的内容可以包含任意模板代码
-        // num1 子模板里的内容都是在子作用域中编译的
-        template: `<a
-                        v-bind:href="url" :style="[colorSetting]"
-                        class="nav-link"
-                    >
-                        <slot>作为备胎，备胎继续中</slot>
-                    </a>
+    //   slot具有一个特殊的attribute： name 这个attribute可以用来定义额外的插槽，一个不带 name 的 <slot> 出口会带有隐含的名字“default”。
+        template: `<div class="container">
+                        <header>
+                            <slot name="header"></slot>
+                        </header>
+                    
+                        <main>
+                            <slot></slot>
+                        </main>
+
+                        <footer>
+                            <slot name="footer"></slot>
+                        </footer>
+                    </div>
                     `
 
     })
 
     var vm = new Vue({
         el: '#app',
-// num2 父级模板里的所有内容都是父级作用域中编译的 父级
         data: {
             user: {
                 name: '张三'
@@ -55,11 +72,9 @@
             title: '你是电逆时光' 
 
         },
-        // 使用methods属性去声明clicknow方法
         methods:{
            
         },
-        // 注册局部组件名称NavgationLinks 驼峰式 对应 了 DOM中的navgation-links方式
         components: {
 
             NavgationLinks : {
@@ -69,13 +84,11 @@
                         </div>
                      `
                             ,
-                // 声明组件属性，required function
                 data(){
                     return {
 
                     }
                 },
-                // 声明组件方法
                 methods: {
 
                 }
