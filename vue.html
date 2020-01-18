@@ -16,11 +16,7 @@
         </navgation-link>
 
         <navgation-links >
-            <!-- 添加一个 Font Awesome 图标 -->
-            <span class="fa fa-user"></span>
-            Your Profile
-
-            <h1>假装自己有font icon </h1>
+            
         </navgation-links>
 
     </div>
@@ -43,7 +39,7 @@
                         v-bind:href="url" :style="[colorSetting]"
                         class="nav-link"
                     >
-                        <slot></slot>
+                        <slot>作为备胎，备胎继续中</slot>
                     </a>
                     `
 
@@ -69,7 +65,7 @@
             NavgationLinks : {
                 template: `<div>
                          <h1>hi...</h1>
-                         <slot></slot>
+                         <slot>作为备胎，备胎转正了</slot>
                         </div>
                      `
                             ,
