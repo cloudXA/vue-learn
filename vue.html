@@ -10,90 +10,53 @@
 </head>
 <body>
     <div id="app">
-        
-        <!-- 插槽prop允许我们将插槽转换为可复用的模板，这些模板可以基于输入的prop渲染处不同的内容
-        这在设计封装数据逻辑同时允许父级组件自定义部分布局的可复用组件时最有用 -->
 
+        <!-- 实现组件的切换version 1.0 -->
 
-        <!-- 我们可以将每个todo作为父级组件的插槽，以此作为父级组件的插槽，以此通过父级组件对其进行控制， -->
-        <!-- 然后通过todo作为一个插槽prop进行绑定 -->
-        
+        <!-- <!-- <posts></posts> -->
+        <div>
+            <a @click.prevent="toggle(posts)">posts</a>
+            <a @click.prevent="toggle(archive)">archive</a>
+        </div>
 
-        <todo-list v-bind:todos="todos">
+        <div v-bind:is="target" ></div> 
 
-            <!-- 当template被注释的时候，todo-list定义的模板内容的后备内容将会转正 -->
-            <template v-slot:todo="{ todo }">
-
-                <span v-if="todo.isComplte"> ✔ </span>
-                {{ todo.text }}
-
-            </template>
-        </todo-list>
-
-        <navgation-links >
-            
-        </navgation-links>
+        <!-- <component v-bind:is="posts"></component> -->
 
     </div>
 
     <script>
-    // 全局组件
-    // 当我们使用todo-list组件的时候，我们可以选择为todo定义一个不一样的<template>作为替代方案，并可以从子组件获取数据
-    Vue.component('todo-list', {
-        data() {
-            return {
-                filteredTodos: [
-                    {id: 0, text: '当', isComplte: true },
-                    {id: 1, text: 'count star', isComplte: false }
-                ]
-            }
-        },
-        template: `
-                    <ul>
-                        <li
-                        v-for="todo in filteredTodos"
-                        v-bind:key="todo.id"
-                        >
-                        <!-- 我们为每个todo准备了一个插槽，将'todo'对象作为一个插槽的prop传入 -->
-                        <slot name="todo" v-bind:todo="todo">
-                            <!-- 后备内容  -->
-                            {{ todo.text }}
-
-                        </slot>
-                        </li>
-                    </ul>
-                    `
-
-    })
-
     var vm = new Vue({
         el: '#app',
         data: {
-            todos: ''
+            posts: "posts",
+            archive: "archive",
+            target: ""
         },
-        methods:{
-           
+        methods: {
+            toggle(target) {
+                this.target = target;
+            } 
         },
+        // 注册局部组件名称test
         components: {
-
-            NavgationLinks : {
-                template: `<div>
-                         <h1>hi...</h1>
-                         <slot></slot>
-                        </div>
-                     `
-                            ,
+            posts: {
+                template: '<h2>post组件</h2>',
+                // 声明组件属性
                 data(){
                     return {
 
                     }
                 },
+                // 声明组件方法
                 methods: {
-
+                    
                 }
+            },
+            archive: {
+                template: '<h2>archive组件</h2>'
             }
         }
     })
- 
-
+        
     </script>
