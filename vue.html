@@ -9,34 +9,61 @@
 
 </head>
 <body>
+
+  <!-- 通过level prop 动态生成标题 -->
   <div id="app">
-      <div id="baseexample">
-          <p>Scroll down the page</p>
-          <!-- 指令函数能够接受所有合法的JavaScript表达式 -->
-          <p v-color-swatch="{ color: 'white', text: 'hello!' }">I am pinned onto the page at 200px to the left. </p>
-      </div>
-      
+    <anchored-heading :level="6">Hello world!</anchored-heading>
   </div>
+
+<script type="text/x-template" id="anchored-heading-template">
+      <h1 v-if="level === 1">
+        <slot></slot>
+      </h1>
+
+      <h2 v-else-if="level === 2">
+        <slot></slot>
+      </h2>
+
+      <h3 v-else-if="level === 3">
+        <slot></slot>
+      </h3>
+
+      <h4 v-else-if="level === 4">
+        <slot></slot>
+      </h4>
+
+      <h5 v-else-if="level === 5">
+        <slot></slot>
+      </h5>
+
+      <h6 v-else-if="level === 6">
+        <slot></slot>
+      </h6>
+</script>
 
 
 <script>
-    
-    Vue.directive('color-swatch', (el, binding) => {
-      el.style.backgroundColor = binding.value
-      console.log(binding.value.color);
-      console.log(binding.value.text);
-    })
 
-    var vm = new Vue({
-      el: '#baseexample',
-      // argument 参数可以根据组件实例数据进行更新。这使得自定义指令可以在应用中被灵活使用
+  Vue.component('anchored-heading', {
+      template: '#anchored-heading-template',
+      props: {
+        level: {
+          type: Number,
+          required: true
+        }
+      }
+  })
+
+  var vm = new Vue({
+      el: '#app',
       data() {
         return {
           direction: 'left',
           color: 'green'
         }
       }
-    })
+  })
+
 </script>
 
 </body>
