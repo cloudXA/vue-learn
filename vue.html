@@ -31,7 +31,23 @@
             <h1>假装自己有font icon </h1>
         </navgation-links>
 
+        <button-counter></button-counter>
+
     </div>
+
+
+    <!-- x-template 定义模板的方式在script元素中，为其带上text/x-template 的类型
+    然后通过id将模板引用过去 -->
+
+    <!-- 注意
+        这些可以用于模板特别大的demo或者极小型的应用，但是其他情况请避免使用，这回将模板和该组件的其他定义分离 -->
+    <script type="text/x-template" id="hello-template">
+      <div>
+        <h1>hi...</h1>
+        <button >you click me {{count}}times</button>
+        <slot></slot>
+      </div>
+    </script>
 
     <script>
     Vue.component('button-counter', {
@@ -41,12 +57,7 @@
                 count: 0
             }
         },
-        template: `<div>
-                        <h1>hi...</h1>
-                        <button v-on:click="clickfun">{{title}}you click me {{count}}times</button>
-                        <slot></slot>
-                   </div>
-                    `,
+        template: '#hello-template'
     })
 
     Vue.component('navgation-link', {
@@ -102,4 +113,6 @@
  
 
     </script>
+
+
 
