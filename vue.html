@@ -10,33 +10,29 @@
 </head>
 <body>
   <div id="app">
-      <div id="hook-arguments-example" v-demo:[argument].a.b = 'message'></div>
+      <div id="baseexample">
+          <p>Scroll down the page</p>
+          <p v-pin="200">Stick me 200px from the top of the page </p>
+      </div>
       
   </div>
 
 
 <script>
-    // 注册一个全局自定义指令v-focus 
-    Vue.directive('demo', {
+    // 创建一个自定义指令，用来通过固定布局将元素固定在页面上，我们可以向这样创建一个通过指令值来更新数值位置像素值的自定义指令
+    
+  
+    Vue.directive('pin', {
       
       bind(el, binding, vnode) {
-        // argument参数可以根据组件实例数据进行更新，这使得自定义指令可以在应用中被灵活使用
-        binding.arg = '更新参数'
-        var s = JSON.stringify
-        el.innerHTML = 
-          'name:'        + s(binding.name) + '<br>' + 
-          'value:'       + s(binding.value) + '<br>' + 
-          'expression:'  + s(binding.expression) + '<br>' + 
-          'argument:'    +  s(binding.arg) + '<br>' + 
-          'modifiers:'   + s(binding.modifiers) + '<br>' + 
-          'vnode keys:'  + Object.keys(vnode).join('---')
+        el.style.position = 'fixed'
+        el.style.top = binding.value + 'px'
       }
     })
 
     var vm = new Vue({
-      el: '#hook-arguments-example',
+      el: '#baseexample',
       data: {
-        message: '你好'
       }
     })
 </script>
