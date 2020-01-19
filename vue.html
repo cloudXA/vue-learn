@@ -31,6 +31,7 @@
     </template>
 
 <script>
+  // TODO: 实践支持
   // $emit 可以被v-on侦听， vue实例同时在其事件接口中提供了其他的方法
 
   // $on(eventName, eventHandler)侦听一个事件
@@ -72,48 +73,16 @@
           }
         },
 
-        // version 1.0 需要保存picker实例，建立代码独立于我们的清理代码
-        // mounted() {
-        //   this.picker = new Pikaday({
-        //     field: this.$refs.usernameInput,
-        //     format: 'YYYY-MM-DD'
-        //   })
+        // 组件之间的循环引用---组件在渲染树中互为对方的后代和祖先  --- 悖论
+        // 我们需要给模块系统一个点，在那里“A 反正是需要 B 的，但是我们不需要先解析 B。”
+        // TODO: 实践支持
+        // 所以我们会等到生命周期钩子 beforeCreate 时去注册它：
+        // beforeCreate() {
+        //   this.$options.components.TreeFolderContents = require('./tree-folder-contents.vue').default
         // },
-        // beforeDestroy() {
-        //   this.picker.destroy();
-        // },
-
-        // version 2.0  通过一个程序化的侦听器解决问题
-        // mounted() {
-        //   var picker = new Pikaday({
-        //     filed: this.$refs.input,
-        //     format: 'YYYY-MM-DD'
-        //   })
-
-        //   this.$once('hook:beforeDestroy', function () {
-        //       picker.destroy()
-        //   })
-        // },
-
-        // version 3.0 可以让多个输入框同时使用不同的Pikaday,每个新的实例都程序化的在后期清理他自己
-        // mounted() {
-        //   this.attachDatepicker('startDateInput')
-        //   this.attachDatepicker('endDateInput')
-
-        // },
-        // methods: {
-        //   attachDatepicker(refName) {
-        //       var picker = new Pikaday({
-        //         field: this.$refs[refName],
-        //         format: 'YYYY-MM-DD'
-        //       })
-
-        //       this.$once('hook:beforeDestroy', function () {
-        //           picker.destroy()
-        //       })
-        //   }
-        // }
-
+          // components: {
+          //   // TreeFolderContents: () => import('./tree-folder-contents.vue')
+          // }
         
 
     })
