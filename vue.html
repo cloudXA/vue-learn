@@ -4,90 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
     <script src="./node_modules/./vue/dist/vue.js"></script>
+    <title>Document</title>
 
-    <style>
-        h1{
-            background:yellow;
-        }
-        h2{
-            background:blue;
-        }
-        h3{
-            background:pink;
-        }
-    </style>
 </head>
 <body>
-    <div id="dynamic-component-demo">
-        <google-map style="border:1px solid pink;">
-          <google-map-region v-bind:shape="cityBoundaries" style="border:1px solid red;width:80%;">
-            <google-map-markers v-bind:places="iceCreamShops"  style="border:1px solid yellow;width:60%;"></google-map-markers>
-          </google-map-region>
-        </google-map>
+  前言：
+    <!-- 尽管存在prop和事件，有的时候你任然需要在JavaScript里直接访问一个子组件，为了达到这个目的 -->
+    <!-- 你可以通过ref这个attribute为子组件赋予一个ID引用 -->
+
+  <!-- 父组件 -->
+    <div id="app">
+        <!-- 通过ref这个attribute为子组件赋予一个id引用 -->
+        <!-- 子组件child contain: button and base-input  -->
+        <button @click="start">点击聚焦</button>
+        <base-input  ref="usernameInput">
+
+        </base-input>
+
     </div>
 
-    <script>
-        Vue.component('google-map', { 
-            template: `<div><h1 @click="changeMsg">我是祖父，googel-map，{{msg}}</h1><div>改变msg<input type=“text” v-model="msg" /></div><slot></slot></div>`,
-            data(){
+    <template id="child">
+        <div>
+            <input ref="input">
+        </div>
+           
+    </template>
+
+<script>
+    // 子组件
+    Vue.component('base-input', {
+        data() {
             return {
-              msg:'问候你,你好，我是李云龙'
+
             }
-          },
-        //   provide 选项允许我们指定我们想要提供给后代组件的数据/方法。就是 <google-map> 内部的 getMap 方法：
-          provide: function () {
-            return {
-              getMap: function(){
-              console.log('我来自祖父组件，要用我用inject就好啦，怎么感觉我像react中的context',this.msg)
-            },
-            msg:this.msg
-          }
+        },
+        template: "#child",
+        methods: {
+            // 用来从父组件聚焦输入框
+            focus() {
+                this.$refs.input.focus()
+                console.log('字方法被敷方法调用')
+            }
+        }
+
+    })
+    // 父组件
+    var vm = new Vue({
+        el: '#app',
+
+        data: {
+            
         },
         methods:{
-          changeMsg(){
-            this.msg = 'hello,i am zhanglijian!'
+          start() {
+            this.$refs.usernameInput.focus();
           }
         }
-        })
-        // 然后在任何后代组件里，我们都可以使用 inject 选项来接收指定的我们想要添加在这个实例上的属性：
-        Vue.component('google-map-region', { 
-          props:["shape"],
-          inject: ['getMap','msg'],
-            template: `<div><h2 @click="getMap">我是父亲,gooel-map-region,{{msg}}</h2><p>{{shape}}</p><slot></slot></div>`
-        })
-        // 然后在任何后代组件里，我们都可以使用 inject 选项来接收指定的我们想要添加在这个实例上的属性：
-        Vue.component('google-map-markers', {
-          props:["places"],
-          inject: ['getMap','msg'],
-            template: `<div><h3 @click="getMap">我是儿子,gooel-map-makers,{{msg}}</h3><p>{{places}}</p></div>`
-        })
+        
 
-        var vm = new Vue({
-          el: '#dynamic-component-demo',
-          data: {
-            currentTab: 'Posts',
-            tabs: ['Posts', 'Archive'],
-            msg:'恭喜您中了我司一等奖，hiahiahia!',
-            cityBoundaries:'滨江',
-            iceCreamShops:'永辉超市'
-          },
-          computed: {
-            currentTabComponent: function () {
-              return 'tab-' + this.currentTab.toLowerCase()
-            }
-          }
-        })
+    })
+ 
 
-        // 相比 $parent 来说，这个用法可以让我们在任意后代组件中访问 getMap，
-        // 而不需要暴露整个 <google-map> 实例。这允许我们更好的持续研发该组件，
-        // 而不需要担心我们可能会改变/移除一些子组件依赖的东西。同时这些组件之间的接口是始终明确定义的，就和 props 一样。
-    </script>
-
-
-</body>
-</html>
+</script>
 
 
 
