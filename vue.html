@@ -12,7 +12,8 @@
   <div id="app">
       <div id="baseexample">
           <p>Scroll down the page</p>
-          <p v-color-swatch="color">I am pinned onto the page at 200px to the left. </p>
+          <!-- 指令函数能够接受所有合法的JavaScript表达式 -->
+          <p v-color-swatch="{ color: 'white', text: 'hello!' }">I am pinned onto the page at 200px to the left. </p>
       </div>
       
   </div>
@@ -22,6 +23,8 @@
     
     Vue.directive('color-swatch', (el, binding) => {
       el.style.backgroundColor = binding.value
+      console.log(binding.value.color);
+      console.log(binding.value.text);
     })
 
     var vm = new Vue({
