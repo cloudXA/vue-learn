@@ -9,65 +9,44 @@
 
 </head>
 <body>
+<!-- vm.$slots 用来访问被插槽分发的内容，每个具名插槽有其相应的属性 v-slot:foo 中的内容将会
+在vm.$slots.foo 中被找到。 default属性包括了所有没有被包含在具名插槽中的节点，或v-slot:default 的内容 -->
+<div id="app">
 
-  <!-- 通过level prop 动态生成标题 -->
-  <div id="app">
-    <anchored-heading :level="1">Hello world!</anchored-heading>
-  </div>
+ <blog-post>
+   <template>
+     <h1>
+       About Me 
+     </h1>
+   </template>
 
-<!-- <script type="text/x-template" id="anchored-heading-template">
-      <h1 v-if="level === 1">
-        <slot></slot>
-      </h1>
+   <p>Here's some page content, which will be included in vm.$slots.default, because it's not inside a named slot.</p>
+   
 
-      <h2 v-else-if="level === 2">
-        <slot></slot>
-      </h2>
+   <template v-slot:footer>
+     <p>
+       copyright 2020 
+     </p>
+   </template>
 
-      <h3 v-else-if="level === 3">
-        <slot></slot>
-      </h3>
-
-      <h4 v-else-if="level === 4">
-        <slot></slot>
-      </h4>
-
-      <h5 v-else-if="level === 5">
-        <slot></slot>
-      </h5>
-
-      <h6 v-else-if="level === 6">
-        <slot></slot>
-      </h6>
-</script> -->
+   <p>页面内容，将在vm.$slots.default, 因为没有slot标签</p>
+ </blog-post>
+  
+</div>
 
 
 <script>
-// 使用render函数重写上面的例子
-// 前提：
-//   向组件中传递不带v-slot指令的子节点时， 比如anchored-heading中的hello world! ,这些子节点被存储在
-//   组件实例中的$slots.default中
 
-// vm.$slots 
-//  type: {[name: string]: ?Array<VNode> }
-//   description: 
-//   永安里访问被插槽分发的内容，每个具名插槽有其相应的属性
-//   v-slot:foo 中的内容将会在vm.$slots.foo 中被找到
-//   default 属性包括了所有没有被包含在具名插槽中的节点，或v-slot:defautl的内容
-  Vue.component('anchored-heading', {
-      // template: '#anchored-heading-template',
+  Vue.component('blog-post', {
       render(createElement) {
-          return createElement(
-            'h' + this.level, //标签名称
-            this.$slots.default // 子节点数组
-          )
-      },
-
-      props: {
-        level: {
-          type: Number,
-          required: true
-        }
+          var header = this.$slots.header
+          var body = this.$slots.default 
+          var footer = this.$slots.footer 
+          return createElement('div', [
+            createElement('header', header),
+            createElement('main', body),
+            createElement('footer', footer)
+          ])
       }
   })
 
