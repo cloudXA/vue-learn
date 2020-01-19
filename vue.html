@@ -12,10 +12,10 @@
 
   <!-- 通过level prop 动态生成标题 -->
   <div id="app">
-    <anchored-heading :level="6">Hello world!</anchored-heading>
+    <anchored-heading :level="1">Hello world!</anchored-heading>
   </div>
 
-<script type="text/x-template" id="anchored-heading-template">
+<!-- <script type="text/x-template" id="anchored-heading-template">
       <h1 v-if="level === 1">
         <slot></slot>
       </h1>
@@ -39,13 +39,30 @@
       <h6 v-else-if="level === 6">
         <slot></slot>
       </h6>
-</script>
+</script> -->
 
 
 <script>
+// 使用render函数重写上面的例子
+// 前提：
+//   向组件中传递不带v-slot指令的子节点时， 比如anchored-heading中的hello world! ,这些子节点被存储在
+//   组件实例中的$slots.default中
 
+// vm.$slots 
+//  type: {[name: string]: ?Array<VNode> }
+//   description: 
+//   永安里访问被插槽分发的内容，每个具名插槽有其相应的属性
+//   v-slot:foo 中的内容将会在vm.$slots.foo 中被找到
+//   default 属性包括了所有没有被包含在具名插槽中的节点，或v-slot:defautl的内容
   Vue.component('anchored-heading', {
-      template: '#anchored-heading-template',
+      // template: '#anchored-heading-template',
+      render(createElement) {
+          return createElement(
+            'h' + this.level, //标签名称
+            this.$slots.default // 子节点数组
+          )
+      },
+
       props: {
         level: {
           type: Number,
