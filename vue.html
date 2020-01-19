@@ -9,22 +9,38 @@
 
 </head>
 <body>
-    <div id="app">
+  <div id="app">
+    <!-- vue2.0 代码复用和抽象的主要形式是组件，然而仍然需要对普通DOM元素进行底层操作，这时候就会用到自定义指令
+      -->
+      <input type="text" v-focus>
+      <input type="" v-focus>
+      
+  </div>
 
-    </div>
 
+<script>
+    // 注册一个全局自定义指令v-focus 
+    // Vue.directive('focus', {
+    //   // 当被绑定的元素插入到DOM 中
+    //   inserted(el) {
+    //     el.focus()
+    //   }
+    // })
 
-    <script>
-      // 自定义选项将使用默认策略，简单覆盖已有值，如果让自定义选项以自定义选项以自定义逻辑合并，
-      // 可以向Vue.config.optionMergeStrategies添加一个函数
-      Vue.config.optionMergeStrategies.myOption = function (toVal, fromVal) {
-          // 返回合并后的值
+    var vm = new Vue({
+      el: '#app',
+      // 如果想注册局部指令，组件中也接受一个 directives 的选项：
+      directives: {
+        focus: {
+          inserted(el) {
+            el.focus();
+          }
         }
+      }
 
-      // 对于多数值为对象的选项，可以使用与methods相同的合并策略
-      var strategies = Vue.config.optionMergeStrategies
-      strategies.myOption = strategies.methods
-    </script>
+    })
+</script>
 
+</body>
 
 
