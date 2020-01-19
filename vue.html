@@ -12,7 +12,7 @@
   <div id="app">
       <div id="baseexample">
           <p>Scroll down the page</p>
-          <p v-pin="200">Stick me 200px from the top of the page </p>
+          <p v-pin:[direction]="200">I am pinned onto the page at 200px to the left. </p>
       </div>
       
   </div>
@@ -21,18 +21,23 @@
 <script>
     // 创建一个自定义指令，用来通过固定布局将元素固定在页面上，我们可以向这样创建一个通过指令值来更新数值位置像素值的自定义指令
     
-  
+  // 需要把元素固定在左侧而不是顶部，使用动态参数就可以非常方便地根据每个组件实例来进行更新
     Vue.directive('pin', {
       
       bind(el, binding, vnode) {
         el.style.position = 'fixed'
-        el.style.top = binding.value + 'px'
+        var s = (binding.arg === 'left' ? 'left' : 'top')
+        el.style[s] = binding.value + 'px'
       }
     })
 
     var vm = new Vue({
       el: '#baseexample',
-      data: {
+      // argument 参数可以根据组件实例数据进行更新。这使得自定义指令可以在应用中被灵活使用
+      data() {
+        return {
+          direction: 'left'
+        }
       }
     })
 </script>
