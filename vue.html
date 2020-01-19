@@ -11,132 +11,47 @@
 <body>
     <div id="app">
 
-
-      <!-- 控制更新说明 -->
-      <!-- 如果你自己需要在Vue中做一次强制更新，99.9%的情况是你在某个地方做错了
-
-      如： 
-        你可能还没有留意到数组或者对象的变更检测注意事项，或者你可能依赖了一个未被vue的响应式
-        系统追踪的状态
-
-        当上面做过后，你可以通过$forceUpadete来完成 -->
-
-
-
-        <!-- 通过v-once创建低开销的静态组件
-          当有一个组件有大量的静态内容，这种情况下，在根元素上添加v-once 以确保这些内容只计算
-          一次然后缓存起来
-
-          Vue.component('terms-of-service', {
-            template: `
-              <div v-once>
-                <h1>Terms of Service</h1>
-                ... a lot of static content ...
-              </div>
-            `
-          }) -->
-
-          <!-- 当开发者并不熟悉v-once或漏看了他在模板中，他们可能会花很多个小时去找出模板为什么无法正确更新。 -->
-
-      <!-- 当inline-template属性attribute出现在一个子组件上是，这个组件将会使用其里面的内容作为模板 -->
-      <!-- 而不是将其作为被分发的内容 -->
-
-      <!-- 不过，inline-template会让模板的作用域变得更难理解，最佳实践，请在组件内优先选择 -->
-      <!-- template 选项或者.vue文件里的一个template元素来定义模板 -->
-        <navgation-link url="" inline-template>
-          <div>
-            <p>These are compiled as the component's own template.</p>
-            <p>Not parent's transclusion content.</p>
-          </div>
-        </navgation-link>
-
-        <navgation-links >
-            <!-- 添加一个 Font Awesome 图标 -->
-            <span class="fa fa-user"></span>
-            Your Profile
-
-            <h1>假装自己有font icon </h1>
-        </navgation-links>
-
-        <button-counter></button-counter>
-
     </div>
 
 
-    <!-- x-template 定义模板的方式在script元素中，为其带上text/x-template 的类型
-    然后通过id将模板引用过去 -->
-
-    <!-- 注意
-        这些可以用于模板特别大的demo或者极小型的应用，但是其他情况请避免使用，这回将模板和该组件的其他定义分离 -->
-    <script type="text/x-template" id="hello-template">
-      <div>
-        <h1>hi...</h1>
-        <button >you click me {{count}}times</button>
-        <slot></slot>
-      </div>
-    </script>
-
     <script>
-    Vue.component('button-counter', {
-        props: ['title'],
-        data() {
-            return {
-                count: 0
-            }
+      // 定义一个混入对象
+      var myMixin = {
+        created() {
+          this.hello()
         },
-        template: '#hello-template'
-    })
-
-    Vue.component('navgation-link', {
-        data() {
-            return {
-                url: '/src'
-            }
-        },
-        // 当组件渲染的时候，slot将会被替换为  你的资源呦 
-        // 插槽的内容可以包含任意模板代码
-        template: `<a
-                        v-bind:href="url"
-                        class="nav-link"
-                    >
-                        <slot></slot>
-                    </a>
-                    `
-
-    })
-
-    var vm = new Vue({
-        el: '#app',
-        data: {
-
-        },
-        // 使用methods属性去声明clicknow方法
-        methods:{
-           
-        },
-        // 注册局部组件名称NavgationLinks 驼峰式 对应 了 DOM中的navgation-links方式
-        components: {
-
-            NavgationLinks : {
-                template: `<div>
-                         <h1>hi...</h1>
-                         <slot></slot>
-                        </div>
-                     `
-                            ,
-                // 声明组件属性，required function
-                data(){
-                    return {
-
-                    }
-                },
-                // 声明组件方法
-                methods: {
-
-                }
-            }
+        methods: {
+          hello() {
+            console.log('hello from mixin');
+          }
         }
-    })
+      }
+
+      // 定义一个使用混入对象的组件
+      var Component = Vue.extend({
+        mixins: [myMixin]
+      })
+      var component = new Component() // => hello from mixin
+
+      // var vm = new Vue({
+      //     el: '#app',
+      //     // mixins: [myMixin],
+
+      //     data: {
+
+      //     },
+      //     created() {
+      //       // this.hello();
+      //     },
+      //     // 使用methods属性去声明clicknow方法
+      //     methods:{
+            
+      //     },
+      //     components: {
+      //       component
+      //     }
+
+      // })
  
 
     </script>
