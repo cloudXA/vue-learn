@@ -17,6 +17,12 @@
     <script>
       // 定义一个混入对象
       var myMixin = {
+        data() {
+          return {
+            message: 'hello',
+            foo: 'abc'
+          }
+        },
         created() {
           this.hello()
         },
@@ -28,30 +34,37 @@
       }
 
       // 定义一个使用混入对象的组件
-      var Component = Vue.extend({
-        mixins: [myMixin]
-      })
-      var component = new Component() // => hello from mixin
-
-      // var vm = new Vue({
-      //     el: '#app',
-      //     // mixins: [myMixin],
-
-      //     data: {
-
-      //     },
-      //     created() {
-      //       // this.hello();
-      //     },
-      //     // 使用methods属性去声明clicknow方法
-      //     methods:{
-            
-      //     },
-      //     components: {
-      //       component
-      //     }
-
+      // var Component = Vue.extend({
+      //   mixins: [myMixin]
       // })
+      // var component = new Component() // => hello from mixin
+
+      // vm定义的同名属性会替换mixin属性
+
+
+
+      // 当组件和混入对象有同名选项时，这些选项将以恰当的方式进行合并，
+      // 数据在内部会进行递归合并，并在发生冲突时以组件数据优先
+      var vm = new Vue({
+          el: '#app',
+          mixins: [myMixin],
+
+          data() {
+            return {
+              message: 'goodbye',
+              bar: 'def'
+            }
+          },
+          created() {
+            console.log(this.$data)
+          },
+          // 使用methods属性去声明clicknow方法
+          methods:{
+            
+          }
+          
+
+      })
  
 
     </script>
