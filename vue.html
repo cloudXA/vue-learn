@@ -5,90 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="./node_modules/./vue/dist/vue.js"></script>
-    <script src="./node_modules/pikaday/pikaday.js"></script>
     <title>Document</title>
 
 </head>
 <body>
-
-
-  <!-- 父组件 -->
     <div id="app">
-        <!-- 通过ref这个attribute为子组件赋予一个id引用 -->
-        <!-- 子组件child contain: button and base-input  -->
-        <button @click="start">点击聚焦</button>
-        <base-input  ref="usernameInput">
 
-        </base-input>
+      <!-- 当inline-template属性attribute出现在一个子组件上是，这个组件将会使用其里面的内容作为模板 -->
+      <!-- 而不是将其作为被分发的内容 -->
+
+      <!-- 不过，inline-template会让模板的作用域变得更难理解，最佳实践，请在组件内优先选择 -->
+      <!-- template 选项或者.vue文件里的一个template元素来定义模板 -->
+        <navgation-link url="" inline-template>
+          <div>
+            <p>These are compiled as the component's own template.</p>
+            <p>Not parent's transclusion content.</p>
+          </div>
+        </navgation-link>
+
+        <navgation-links >
+            <!-- 添加一个 Font Awesome 图标 -->
+            <span class="fa fa-user"></span>
+            Your Profile
+
+            <h1>假装自己有font icon </h1>
+        </navgation-links>
 
     </div>
 
-    <template id="child">
-        <div>
-            <input ref="input">
-        </div>
-           
-    </template>
-
-<script>
-  // TODO: 实践支持
-  // $emit 可以被v-on侦听， vue实例同时在其事件接口中提供了其他的方法
-
-  // $on(eventName, eventHandler)侦听一个事件
-  // $once(eventName, eventHandler)一次性侦听一个事件
-  // $off(eventName, eventHandler) 停止侦听一个事件
-
-// 通常，当你需要在一个组件实例上手动侦听事件时，可以用上他们，也可用于
-// 组织工具，在第三方库的模式经常看到这种模式
-
-
-
-    // 子组件
-    Vue.component('base-input', {
+    <script>
+    Vue.component('button-counter', {
+        props: ['title'],
         data() {
             return {
-
+                count: 0
             }
         },
-        template: "#child",
-        methods: {
-            // 用来从父组件聚焦输入框
-            focus() {
-                this.$refs.input.focus()
-                console.log('字方法被敷方法调用')
+        template: `<div>
+                        <h1>hi...</h1>
+                        <button v-on:click="clickfun">{{title}}you click me {{count}}times</button>
+                        <slot></slot>
+                   </div>
+                    `,
+    })
+
+    Vue.component('navgation-link', {
+        data() {
+            return {
+                url: '/src'
             }
-        }
+        },
+        // 当组件渲染的时候，slot将会被替换为  你的资源呦 
+        // 插槽的内容可以包含任意模板代码
+        template: `<a
+                        v-bind:href="url"
+                        class="nav-link"
+                    >
+                        <slot></slot>
+                    </a>
+                    `
 
     })
-    // 父组件
+
     var vm = new Vue({
         el: '#app',
-
         data: {
-            
+
         },
+        // 使用methods属性去声明clicknow方法
         methods:{
-          start() {
-            this.$refs.usernameInput.focus();
-          }
+           
         },
+        // 注册局部组件名称NavgationLinks 驼峰式 对应 了 DOM中的navgation-links方式
+        components: {
 
-        // 组件之间的循环引用---组件在渲染树中互为对方的后代和祖先  --- 悖论
-        // 我们需要给模块系统一个点，在那里“A 反正是需要 B 的，但是我们不需要先解析 B。”
-        // TODO: 实践支持
-        // 所以我们会等到生命周期钩子 beforeCreate 时去注册它：
-        // beforeCreate() {
-        //   this.$options.components.TreeFolderContents = require('./tree-folder-contents.vue').default
-        // },
-          // components: {
-          //   // TreeFolderContents: () => import('./tree-folder-contents.vue')
-          // }
-        
+            NavgationLinks : {
+                template: `<div>
+                         <h1>hi...</h1>
+                         <slot></slot>
+                        </div>
+                     `
+                            ,
+                // 声明组件属性，required function
+                data(){
+                    return {
 
+                    }
+                },
+                // 声明组件方法
+                methods: {
+
+                }
+            }
+        }
     })
  
 
-</script>
-
-
+    </script>
 
