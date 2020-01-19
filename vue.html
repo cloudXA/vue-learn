@@ -24,7 +24,7 @@
           }
         },
         created() {
-          this.hello()
+          console.log('混入对象的钩子被调用')
         },
         methods: {
           hello() {
@@ -45,6 +45,8 @@
 
       // 当组件和混入对象有同名选项时，这些选项将以恰当的方式进行合并，
       // 数据在内部会进行递归合并，并在发生冲突时以组件数据优先
+
+      // 同名钩子函数将合并为一个数组，因此都将会被调用，另外混入对象的钩子将在组件自身钩子之前调用
       var vm = new Vue({
           el: '#app',
           mixins: [myMixin],
@@ -56,7 +58,7 @@
             }
           },
           created() {
-            console.log(this.$data)
+            console.log('组件钩子被调用')
           },
           // 使用methods属性去声明clicknow方法
           methods:{
@@ -65,6 +67,10 @@
           
 
       })
+
+      // 结果： 
+      // 混入对象的钩子被调用
+      // 组件钩子被调用
  
 
     </script>
