@@ -6,6 +6,7 @@
   "devDependencies": {
     "axios": "^0.19.1",
     "lodash": "4.13.1",
+    "pikaday": "^1.8.0",
     "vue": "^2.6.11"
   }
 }

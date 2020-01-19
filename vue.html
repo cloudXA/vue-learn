@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="./node_modules/./vue/dist/vue.js"></script>
+    <script src="./node_modules/pikaday/pikaday.js"></script>
     <title>Document</title>
 
 </head>
 <body>
-  前言：
-    <!-- 尽管存在prop和事件，有的时候你任然需要在JavaScript里直接访问一个子组件，为了达到这个目的 -->
-    <!-- 你可以通过ref这个attribute为子组件赋予一个ID引用 -->
+
 
   <!-- 父组件 -->
     <div id="app">
@@ -32,6 +31,17 @@
     </template>
 
 <script>
+  // $emit 可以被v-on侦听， vue实例同时在其事件接口中提供了其他的方法
+
+  // $on(eventName, eventHandler)侦听一个事件
+  // $once(eventName, eventHandler)一次性侦听一个事件
+  // $off(eventName, eventHandler) 停止侦听一个事件
+
+// 通常，当你需要在一个组件实例上手动侦听事件时，可以用上他们，也可用于
+// 组织工具，在第三方库的模式经常看到这种模式
+
+
+
     // 子组件
     Vue.component('base-input', {
         data() {
@@ -60,7 +70,50 @@
           start() {
             this.$refs.usernameInput.focus();
           }
-        }
+        },
+
+        // version 1.0 需要保存picker实例，建立代码独立于我们的清理代码
+        // mounted() {
+        //   this.picker = new Pikaday({
+        //     field: this.$refs.usernameInput,
+        //     format: 'YYYY-MM-DD'
+        //   })
+        // },
+        // beforeDestroy() {
+        //   this.picker.destroy();
+        // },
+
+        // version 2.0  通过一个程序化的侦听器解决问题
+        // mounted() {
+        //   var picker = new Pikaday({
+        //     filed: this.$refs.input,
+        //     format: 'YYYY-MM-DD'
+        //   })
+
+        //   this.$once('hook:beforeDestroy', function () {
+        //       picker.destroy()
+        //   })
+        // },
+
+        // version 3.0 可以让多个输入框同时使用不同的Pikaday,每个新的实例都程序化的在后期清理他自己
+        // mounted() {
+        //   this.attachDatepicker('startDateInput')
+        //   this.attachDatepicker('endDateInput')
+
+        // },
+        // methods: {
+        //   attachDatepicker(refName) {
+        //       var picker = new Pikaday({
+        //         field: this.$refs[refName],
+        //         format: 'YYYY-MM-DD'
+        //       })
+
+        //       this.$once('hook:beforeDestroy', function () {
+        //           picker.destroy()
+        //       })
+        //   }
+        // }
+
         
 
     })

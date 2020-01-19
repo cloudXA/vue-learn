@@ -33,6 +33,11 @@ ms@2.0.0:
   resolved "https://registry.npm.taobao.org/ms/download/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   integrity sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
 
+pikaday@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.npm.taobao.org/pikaday/download/pikaday-1.8.0.tgz#ce930e257042e852e6aadee1115e01554b2d71c5"
+  integrity sha1-zpMOJXBC6FLmqt7hEV4BVUstccU=
+
 vue@^2.6.11:
   version "2.6.11"
   resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
