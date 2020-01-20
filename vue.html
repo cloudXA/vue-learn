@@ -41,7 +41,12 @@
                                 name: headingId,
                                 href: '#' + headingId
                             }
-                        }, this.$slots.default)
+                        }, this.$slots.default),
+                        
+                        createElement('p', 'hi'),
+                        // 错误，--重复的vNode
+                        // createElement('p', 'hi')
+
                     ]
                 )
             },
