@@ -8,70 +8,29 @@
 
 </head>
 <body>
+    <!-- 父级prop的更新会向下流动到子组件中，但是反过来则不行。这样会防止从子组件意外改变父级组件的状态 -->
     <div id="app">
-        <!-- 传入一个对象的所有属性 -->
-        <anchored-heading v-bind:level="1">helloWrold</anchored-heading>
+        <!-- // 在html中是kebab-case 的 -->
+        <blog-post post-title="你好"></blog-post>
+      
     </div>
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
-        var getChildrenTextContent = function (children) {
-            // map返回指定条件的项，经过改变后的
-            return children.map(function (node) {
-                // children获取子元素
-                return node.children
-                    ? getChildrenTextContent(node.children)
-                    : node.text
-            }).join('')
-        }
-
-        Vue.component('anchored-heading', {
-            render: function(createElement) {
-                // 创建kebab-case 风格的ID ,此处有正则bugTODO:
-                var headingId = getChildrenTextContent(this.$slots.default)
-                    .toLowerCase()
-                    .replace(/\W+/g, '-')
-                    .replace(/(^-|-$)/g, '')
-                
-                return createElement(
-                    'h' + this.level,
-                    [
-                        createElement('a', {
-                            attrs: {
-                                name: headingId,
-                                href: '#' + headingId
-                            }
-                        }, this.$slots.default),
-                        
-                        // createElement('p', 'hi'),
-                        // 错误，--重复的vNode
-                        // createElement('p', 'hi')
-                        // 使用工厂函数实现重复多次的渲染
-                        Array.apply(null, {length: 20 }).map(() => createElement('p', 'hi'))
-
-                    ]
-                )
-            },
-            props: {
-                level: {
-                    type: Number,
-                    required: true
-                }
-            }
+        Vue.component('blog-post', {
+            // 在JavaScript中就是cameCase
+            props: ['postTitle'],
+            template: '<h3>{{ postTitle }}</h3>'
         })
-
-        var vm = new Vue({
+        
+        new Vue({
             el: '#app',
             data() {
                 return {
                     
                 }
             },
-            created() {
-                
-            },
         })
-
         
     </script>
 
