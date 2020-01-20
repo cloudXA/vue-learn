@@ -11,23 +11,33 @@
     <!-- 父级prop的更新会向下流动到子组件中，但是反过来则不行。这样会防止从子组件意外改变父级组件的状态 -->
     <div id="app">
         <!-- // 在html中是kebab-case 的 -->
-        <blog-post post-title="你好"></blog-post>
+        <blog-post v-bind:post-title="items"></blog-post>
       
     </div>
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
+        // 只要原生的JavaScript中可以轻松完成的操作，vue的渲染函数就不会提供专有的替代方案
+
+        
         Vue.component('blog-post', {
             // 在JavaScript中就是cameCase
             props: ['postTitle'],
-            template: '<h3>{{ postTitle }}</h3>'
+            render(createElement) {
+                if (this.postTitle.length) {
+                    return createElement('ul', this.postTitle.map((item) => createElement('li', item.name)))
+                } else {
+                    return createElement('p', 'no items found')
+                }
+            }
+            
         })
         
         new Vue({
             el: '#app',
             data() {
                 return {
-                    
+                    items: [{name: '张飞'},{name: '关羽'}, {name: '刘备'}]
                 }
             },
         })
