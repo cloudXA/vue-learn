@@ -23,9 +23,20 @@
             // 在JavaScript中就是cameCase
             props: ['value'],
             // 可以通过this.$scopedSlots 访问作用域插槽，每个仓草手势一个vNode数组
+            // `<div><slot></slot></div>`
+            // render(createElement) {
+            //     return createElement('div', this.$slots.default)
+            // }
+
+            // 也可以通过this.$scopedSlots访问作用域插槽，每个作用域插槽都是一个返回若干个vnode的函数
             render(createElement) {
-                return createElement('div', this.$slots.default)
-            }
+                //`<div><slot :text="items"></slot></div>`
+                return createElement('div', [
+                    this.$scopedSlots.default({
+                        text: this.value
+                    })
+                ])
+            },
             
         })
         
