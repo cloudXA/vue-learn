@@ -4,64 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="./node_modules/./vue/dist/vue.js"></script>
     <title>Document</title>
 
 </head>
 <body>
-<!-- vm.$slots 用来访问被插槽分发的内容，每个具名插槽有其相应的属性 v-slot:foo 中的内容将会
-在vm.$slots.foo 中被找到。 default属性包括了所有没有被包含在具名插槽中的节点，或v-slot:default 的内容 -->
-<div id="app">
+    <div id="app">
+        <!-- 传入一个对象的所有属性 -->
+        <anchored-heading v-bind:level="1">helloWrold</anchored-heading>
+    </div>
+    <script src="./node_modules/./vue/dist/vue.js"></script>
 
- <blog-post>
-   <template>
-     <h1>
-       About Me 
-     </h1>
-   </template>
-
-   <p>Here's some page content, which will be included in vm.$slots.default, because it's not inside a named slot.</p>
-   
-
-   <template v-slot:footer>
-     <p>
-       copyright 2020 
-     </p>
-   </template>
-
-   <p>页面内容，将在vm.$slots.default, 因为没有slot标签</p>
- </blog-post>
-  
-</div>
-
-
-<script>
-
-  Vue.component('blog-post', {
-      render(createElement) {
-          var header = this.$slots.header
-          var body = this.$slots.default 
-          var footer = this.$slots.footer 
-          return createElement('div', [
-            createElement('header', header),
-            createElement('main', body),
-            createElement('footer', footer)
-          ])
-      }
-  })
-
-  var vm = new Vue({
-      el: '#app',
-      data() {
-        return {
-          direction: 'left',
-          color: 'green'
+    <script>
+        var getChildrenTextContent = function (children) {
+            // map返回指定条件的项，经过改变后的
+            return children.map(function (node) {
+                // children获取子元素
+                return node.children
+                    ? getChildrenTextContent(node.children)
+                    : node.text
+            }).join('')
         }
-      }
-  })
 
-</script>
+        Vue.component('anchored-heading', {
+            render: function(createElement) {
+                // 创建kebab-case 风格的ID ,此处有正则bugTODO:
+                var headingId = getChildrenTextContent(this.$slots.default)
+                    .toLowerCase()
+                    .replace(/\W+/g, '-')
+                    .replace(/(^-|-$)/g, '')
+                
+                return createElement(
+                    'h' + this.level,
+                    [
+                        createElement('a', {
+                            attrs: {
+                                name: headingId,
+                                href: '#' + headingId
+                            }
+                        }, this.$slots.default)
+                    ]
+                )
+            },
+            props: {
+                level: {
+                    type: Number,
+                    required: true
+                }
+            }
+        })
 
-</body>
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    
+                }
+            },
+            created() {
+                
+            },
+        })
 
+        
+    </script>
 
