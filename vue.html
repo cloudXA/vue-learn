@@ -43,9 +43,11 @@
                             }
                         }, this.$slots.default),
                         
-                        createElement('p', 'hi'),
+                        // createElement('p', 'hi'),
                         // 错误，--重复的vNode
                         // createElement('p', 'hi')
+                        // 使用工厂函数实现重复多次的渲染
+                        Array.apply(null, {length: 20 }).map(() => createElement('p', 'hi'))
 
                     ]
                 )
