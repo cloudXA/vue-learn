@@ -16,8 +16,8 @@
             <!-- 使用router-link组件来导航 -->
             <!-- 通过传入to属性指定连接 -->
             <!-- router-link默认会被渲染成a标签 -->
-            <router-link to="/bar">go to bar</router-link>
-            <router-link to="/foo">go to foo </router-link>
+            <router-link to="/foo/1">go to bar</router-link>
+            <router-link to="/foo/2">go to foo </router-link>
             
         </p>
         <!-- 路由出口 -->
@@ -31,15 +31,19 @@
 
         // 1. 定义（路由）组件
         // 可以从其他文件import进来
-        const Foo = { template: '<div>foo</div>'}
+        // 当匹配到一个路由时，参数被设置到this.$route.params 
+        const Foo = { template: '<div>foo{{$route.params.id}}</div>'}
         const Bar = { template: '<div>bar</div>'}
 
         // 2.定义路由 
         // 每个路由应该映射一个组件，其中'component'可以是通过Vue.extend()创建的组件构造器
         // 或者，只是一个组件配置对象
+        // 设置动态路径参数(dynamic segment )
+        // 使用冒号：标记，当匹配到一个路由时，参数会被设置到this.$route.params，可以在每个钻进
+        // 内使用
         const routes = [
-            { path: '/foo', component: Foo },
-            { path: '/bar', component: Bar }
+            { path: '/foo/:id', component: Foo }
+            // { path: '/bar', component: Bar }
         ]
 
         // 3. 创建router实例，然后传'routes'配置，你还可以传别的配置参数，不过先这么简单
@@ -58,5 +62,8 @@
         <!-- 通过注入路由器，可以在任何组件内通过this.$router访问路由器，也可以通过this.$route访问当前路由 -->
         <!-- this.$router 和 router 使用起来完全一样，我们使用this.$router的原因是我们并不想在每个独立 -->
         <!-- 需要封装路由的组件中都导入路由 -->
+
+        <!-- 除了$route.params外，$route对象还提供了其他有用的信息
+        $route.query(当url中有查询参数时) $route.hash等 -->
 </body>
 </html>
