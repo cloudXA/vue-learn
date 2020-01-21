@@ -16,6 +16,9 @@
             <!-- 使用router-link组件来导航 -->
             <!-- 通过传入to属性指定连接 -->
             <!-- router-link默认会被渲染成a标签 -->
+            <!-- 当路由参数从1到2，/user/foo 导航到/user/bar,原来的组件实例会被复用，因为两个路由都渲染同个组件 -->
+            <!-- 复用比起销毁再创建，显得更加高效，不过，意味着组件的生命周期钩子不会再被调用 -->
+            <!-- 若想丢路由参数变化做出响应的话，可以watch(监听变化)$route对象 -->
             <router-link to="/foo/1">go to bar</router-link>
             <router-link to="/foo/2">go to foo </router-link>
             
@@ -32,7 +35,25 @@
         // 1. 定义（路由）组件
         // 可以从其他文件import进来
         // 当匹配到一个路由时，参数被设置到this.$route.params 
-        const Foo = { template: '<div>foo{{$route.params.id}}</div>'}
+        const Foo = { 
+            template: '<div>foo{{$route.params.id}}</div>',
+            data() {
+                return {
+                    id: this
+                }
+            },
+            // 使用watch 检测变化version 1.0 
+            watch: {
+                '$route' (to, from ) {
+                    console.log(this.id)
+                }
+            },
+            // 使用beforeRouteUpdate检测变化version 2.0 
+            beforeRouteUpdate(to, from, next) {
+                //react to route changes...
+                //don't forget to call next()
+            }
+        }
         const Bar = { template: '<div>bar</div>'}
 
         // 2.定义路由 
