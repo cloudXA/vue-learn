@@ -5,75 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script src="./node_modules/vue-router/dist/vue-router.js"></script>
 </head>
 <body>
-    <!-- 父级prop的更新会向下流动到子组件中，但是反过来则不行。这样会防止从子组件意外改变父级组件的状态 -->
-    <div id="app">
-        <!-- // 在html中是kebab-case 的 -->
-        <blog-post v-bind:level="1"></blog-post>
+    <div id="app"> 
+        <h1>Hello App!</h1>
 
-        <!-- children会给你两个段落标签，而slots().default 只会传递第二个匿名段落标签
-        slots().foo会传递第一个具名段落标签， -->
-        <my-functional-compoent>
-            <p v-slot:foo>
-                first 
-            </p>
-            <p>second</p>
-        </my-functional-compoent>
-        
-      
-    </div>
-    <script src="./node_modules/./vue/dist/vue.js"></script>
+        <p>
+            <!-- 使用router-link组件来导航 -->
+            <!-- 通过传入to属性指定连接 -->
+            <!-- router-link默认会被渲染成a标签 -->
+            <router-link to="/bar">go to bar</router-link>
+            <router-link to="/foo">go to foo </router-link>
+            
+        </p>
+        <!-- 路由出口 -->
+        <!-- 路由匹配到的组件将渲染在这里 -->
+        <!-- 当<router-link>对应的路由匹配成功，将自动设置class属性值.router-link-active  -->
+        <router-view></router-view>
+    </div> 
 
     <script>
-        var EmptyList = {}
-        var TableList = {}
-        var OrderedList = {}
-        var UnorderedList = {}
+        // 0.如果使用模块化机制编程，导入vue和vueRouter，要调用Vue.use(VueRouter)
 
-        Vue.component('smart-list', {
-            functional: true,
-            props: {
-                items: {
-                    type: Array,
-                    required: true
-                },
-                isOrdered: Boolean
-            },
-            render(h, context) {
-                function appropriateListComponent() {
-                    var items = context.props.items
+        // 1. 定义（路由）组件
+        // 可以从其他文件import进来
+        const Foo = { template: '<div>foo</div>'}
+        const Bar = { template: '<div>bar</div>'}
 
-                    if(items.length === 0) return EmptyList
-                    if(typeof items[0] === 'object') return TableList
-                    if(context.props.isOrdered) return OrderedList
+        // 2.定义路由 
+        // 每个路由应该映射一个组件，其中'component'可以是通过Vue.extend()创建的组件构造器
+        // 或者，只是一个组件配置对象
+        const routes = [
+            { path: '/foo', component: Foo },
+            { path: '/bar', component: Bar }
+        ]
 
-                    return UnorderedList
-                }
-
-                // return createElement(
-                //     appropriateListComponent(),
-                //     context.data,
-                //     comtext.children
-                // )
-
-                // 完全透传任何attribute 事件监听器 子节点
-                return createElement('button', context.data, context.children)
-
-                // 通过向createElement传入context.data 作为第二个参数，我们就把smart-list 上面所有的attribute
-                // 和事件监听器都传递下去了。事实上这是非常透明的，以至于那些事件甚至并不要求.native修饰符
-            },
+        // 3. 创建router实例，然后传'routes'配置，你还可以传别的配置参数，不过先这么简单
+        const router = new VueRouter({
+            routes //routes: routes
         })
-        
-        new Vue({
-            el: '#app',
-            data() {
-                return {
-                    // items: {text: '你好'}
-                }
-            },
-        })
-        
+
+        // 4. 创建和挂载根实例
+        // 记得要通过router配置参数注入路由
+        // 从而让整个应用都有路由功能
+        const app = new Vue({
+            router
+        }).$mount('#app')
     </script>
 
+        <!-- 通过注入路由器，可以在任何组件内通过this.$router访问路由器，也可以通过this.$route访问当前路由 -->
+        <!-- this.$router 和 router 使用起来完全一样，我们使用this.$router的原因是我们并不想在每个独立 -->
+        <!-- 需要封装路由的组件中都导入路由 -->
+</body>
+</html>
