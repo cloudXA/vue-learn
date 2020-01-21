@@ -18,13 +18,30 @@
     <script src="./node_modules/./vue/dist/vue.js"></script>
 
     <script>
+        // 如果一个函数式组件要想接受prop，则props选项时必须的，可以省略props选项，所有组件
+        // 上的attribute都会被自动隐式解析为prop
 
+        // 组件需要的一切都是通过context参数传递，他包括以下
+            // props: 提供所有prop的对象
+            // children: vnode子节点的数组
+            // scopedSlots: 一个暴露传入的作用域插槽的对象，也以函数形式暴露普通插槽
+            // listeners: 一个包含了所有父组件为当前组件注册的事件监听器的对象。是data.on的一个别名
+            // injections: 使用了inject选项，则该对象包含了应当注入的属性
+
+            
+
+        // 没有管理状态，没有监听任何传递给它的状态，没有生命周期方法，实际上，它只是一个接受一些prop的函数
+
+        // 在此场景下，可以将组建标记为functional，他意味着无状态（没有响应式数据）也没有实例（没有this）
         Vue.component('blog-post', {
-            render(createElement) {
+            functional: true,
+            props: ['level'], //props是可选的
+            // 为了弥补缺少的实例，提供第二个参数作为上下文
+            render(createElement, context ) {
                 return createElement(
                     'anchored-heading', {
                         props: {
-                            level: 1 
+                            level: level
                         }
                     }, [
                         createElement('span', 'hello'), 'world'
