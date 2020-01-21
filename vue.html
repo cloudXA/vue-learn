@@ -43,11 +43,17 @@
                     return UnorderedList
                 }
 
-                return createElement(
-                    appropriateListComponent(),
-                    context.data,
-                    comtext.children
-                )
+                // return createElement(
+                //     appropriateListComponent(),
+                //     context.data,
+                //     comtext.children
+                // )
+
+                // 完全透传任何attribute 事件监听器 子节点
+                return createElement('button', context.data, context.children)
+
+                // 通过向createElement传入context.data 作为第二个参数，我们就把smart-list 上面所有的attribute
+                // 和事件监听器都传递下去了。事实上这是非常透明的，以至于那些事件甚至并不要求.native修饰符
             },
         })
         
