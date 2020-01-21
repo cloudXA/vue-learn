@@ -12,6 +12,15 @@
     <div id="app">
         <!-- // 在html中是kebab-case 的 -->
         <blog-post v-bind:level="1"></blog-post>
+
+        <!-- children会给你两个段落标签，而slots().default 只会传递第二个匿名段落标签
+        slots().foo会传递第一个具名段落标签， -->
+        <my-functional-compoent>
+            <p v-slot:foo>
+                first 
+            </p>
+            <p>second</p>
+        </my-functional-compoent>
         
       
     </div>
