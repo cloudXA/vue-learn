@@ -63,8 +63,20 @@
         // 使用冒号：标记，当匹配到一个路由时，参数会被设置到this.$route.params，可以在每个钻进
         // 内使用
         const routes = [
-            { path: '/foo/:id', component: Foo }
+            { path: '/foo/:id', component: Foo },
             // { path: '/bar', component: Bar }
+            // 会匹配所有路径，含有通配符的路径应该放在最后，通常用于客户端404错误
+            {path: '*'}
+            // 会匹配以'/user-' 开头的任意路径
+            // {path: '/user-*'}
+
+            // 使用通配符时，$route.params会自动添加名为pathMatch参数，包含url通过通配符被匹配的部分
+            // this.$router.push('/user-admin')
+            // this.router.params.pathMatch// 'admin'
+
+            // 给出了一个路由
+            // this.$router.push('/non-existing')
+            // this.$route.params.pathMatch // '/non-existing'
         ]
 
         // 3. 创建router实例，然后传'routes'配置，你还可以传别的配置参数，不过先这么简单
