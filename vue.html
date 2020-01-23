@@ -20,7 +20,15 @@
             props: ['id'],
             template: '<div>User {{ id }} </div>'
         }
+        // TODO: 
+        // 布尔模式
+            // 如果props被设置为true，route.params将会设置为组件属性  
 
+        // 对象模式
+            // 如果 props 是一个对象，它会被按原样设置为组件属性。当 props 是静态的时候有用。
+
+        // 函数模式
+            // 创建一个函数返回props，这样你便可以将参数转换为另一种类型，将静态值与基于已有的值结合
         const routes = [
             { path: '/foo/:id', component: User, props: true },
 
