@@ -17,11 +17,19 @@
 
     <script>
         const User = {
-            template: '<div>User {{ $route.params.id }} </div>'
+            props: ['id'],
+            template: '<div>User {{ id }} </div>'
         }
 
         const routes = [
-            { path: '/foo/:id', component: User }
+            { path: '/foo/:id', component: User, props: true },
+
+            // 对于包含命名视图的路由，必须分别为每个命名视图添加'props'选项
+            {
+                path: '/foo/:id',
+                components: {default: User, sidebar: Sidebar },
+                props: {default: true, sidebar: false }
+            }
         ]
 
         const router = new VueRouter({
