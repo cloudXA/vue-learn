@@ -16,30 +16,19 @@
     </div> 
 
     <script>
-       const UserSettingsNav = {template: '<div>UserSettingsNav</div>'}
-       const UserSettings = {template: '<div>UserSettings</div> '}
-       const redirect = {template:'<div>重定向</div>'}
-        
-    //    重定向也是通过routes配置来完成，下面例子是从/a重定向到/b 
+        const User = {
+            template: '<div>User {{ $route.params.id }} </div>'
+        }
+
+        const routes = [
+            { path: '/foo/:id', component: User }
+        ]
+
         const router = new VueRouter({
-            routes: [
-                // { path: '/a', component: UserSettingsNav },
-                // 重定向的目标也可以是命名的路由
-                // { path: '/b', component: UserSettings, name: 'UserSettings' },
-                // { path: '/a', redirect: { name: 'UserSettings'}},
-                // { path: '/a', component: UserSettingsNav},
-                // TODO: 方法，动态返回重定向目标
-                // { path: '/a', redirect: to => {
-
-                // }}
-
-                // 别名
-                { path: '/a', component: UserSettingsNav, alias:  '/b'}
-            ]
+            routes
         })
-
-
-        const app = new Vue({
+        var vm = new Vue({
+            
             router
         }).$mount('#app')
     </script>
