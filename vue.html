@@ -12,91 +12,62 @@
     <div id="app"> 
         <h1>Hello App!</h1>
 
-        <p>
-            <!-- 使用router-link组件来导航 -->
-            <!-- 通过传入to属性指定连接 -->
-            <!-- router-link默认会被渲染成a标签 -->
-            <!-- 当路由参数从1到2，/user/foo 导航到/user/bar,原来的组件实例会被复用，因为两个路由都渲染同个组件 -->
-            <!-- 复用比起销毁再创建，显得更加高效，不过，意味着组件的生命周期钩子不会再被调用 -->
-            <!-- 若想丢路由参数变化做出响应的话，可以watch(监听变化)$route对象 -->
-            <router-link to="/foo/1">go to bar</router-link>
-            <router-link to="/foo/2">go to foo </router-link>
-            
-        </p>
-        <!-- 路由出口 -->
-        <!-- 路由匹配到的组件将渲染在这里 -->
-        <!-- 当<router-link>对应的路由匹配成功，将自动设置class属性值.router-link-active  -->
         <router-view></router-view>
     </div> 
 
     <script>
-        // 0.如果使用模块化机制编程，导入vue和vueRouter，要调用Vue.use(VueRouter)
 
-        // 1. 定义（路由）组件
-        // 可以从其他文件import进来
-        // 当匹配到一个路由时，参数被设置到this.$route.params 
-        const Foo = { 
-            template: '<div>foo{{$route.params.id}}</div>',
-            data() {
-                return {
-                    id: this
-                }
-            },
-            // 使用watch 检测变化version 1.0 
-            watch: {
-                '$route' (to, from ) {
-                    console.log(this.id)
-                }
-            },
-            // 使用beforeRouteUpdate检测变化version 2.0 
-            beforeRouteUpdate(to, from, next) {
-                //react to route changes...
-                //don't forget to call next()
-            }
+        const User = {
+            template: `<div>
+                            User {{ $route.params.id }}<br> 
+                            // 一个被渲然的组件同样可以包含自己的嵌套
+                            <router-view></router-view>
+                       </div>`
         }
-        const Bar = { template: '<div>bar</div>'}
+        const UserPosts = {
+            template: `<div>user posts </div>`
+        }
+        const UserProfile = {
+            template: `<div>user posts </div>`
+        }
+        const UserHome = {
+            template: `<div>user home</div>`
+        }
+      
 
-        // 2.定义路由 
-        // 每个路由应该映射一个组件，其中'component'可以是通过Vue.extend()创建的组件构造器
-        // 或者，只是一个组件配置对象
-        // 设置动态路径参数(dynamic segment )
-        // 使用冒号：标记，当匹配到一个路由时，参数会被设置到this.$route.params，可以在每个钻进
-        // 内使用
-        const routes = [
-            { path: '/foo/:id', component: Foo },
-            // { path: '/bar', component: Bar }
-            // 会匹配所有路径，含有通配符的路径应该放在最后，通常用于客户端404错误
-            {path: '*'}
-            // 会匹配以'/user-' 开头的任意路径
-            // {path: '/user-*'}
-
-            // 使用通配符时，$route.params会自动添加名为pathMatch参数，包含url通过通配符被匹配的部分
-            // this.$router.push('/user-admin')
-            // this.router.params.pathMatch// 'admin'
-
-            // 给出了一个路由
-            // this.$router.push('/non-existing')
-            // this.$route.params.pathMatch // '/non-existing'
-        ]
-
-        // 3. 创建router实例，然后传'routes'配置，你还可以传别的配置参数，不过先这么简单
         const router = new VueRouter({
-            routes //routes: routes
+            routes: [
+                { 
+                    path: '/user/:id', component: User, 
+                    children: [
+                        {
+                            path: '/user/:id', component: User,
+                            children: [
+                                // 当/user/:id匹配成功
+                                // UserHome会被渲染在User的<router-view>中
+                                { path: '', component: UserHome }
+                            ] 
+                        },
+                        {
+                            // 当/user/:id/profile匹配成功
+                            // UserProfile会被渲染在User的<router-view>中
+                            path: 'profile',
+                            component: UserProfile
+                        },
+                        {
+                            // 当/user/:id/posts匹配成功时
+                            // UserPosts会被渲染在User的<router-view>中
+                            path: 'posts',
+                            component: UserPosts
+                        }
+                    ]}
+            ]
         })
 
-        // 4. 创建和挂载根实例
-        // 记得要通过router配置参数注入路由
-        // 从而让整个应用都有路由功能
         const app = new Vue({
             router
         }).$mount('#app')
     </script>
 
-        <!-- 通过注入路由器，可以在任何组件内通过this.$router访问路由器，也可以通过this.$route访问当前路由 -->
-        <!-- this.$router 和 router 使用起来完全一样，我们使用this.$router的原因是我们并不想在每个独立 -->
-        <!-- 需要封装路由的组件中都导入路由 -->
-
-        <!-- 除了$route.params外，$route对象还提供了其他有用的信息
-        $route.query(当url中有查询参数时) $route.hash等 -->
 </body>
 </html>
