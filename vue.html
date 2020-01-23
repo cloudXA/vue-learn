@@ -12,10 +12,19 @@
     <div id="app"> 
         <h1>Hello App!</h1>
 
-        <router-view></router-view>
+        <!-- <router-view></router-view> -->
         <!-- 声明式 -->
         <!-- <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link> -->
-
+        <ul>
+            <li>
+                <router-link to="/">/</router-link>
+                <router-link to="/other">other</router-link>
+            </li>
+        </ul>
+        <!-- 命名视图--同级展示多个视图，而非嵌套展示 -->
+        <router-view class="view one"></router-view>
+        <router-view class="view two" name="a"></router-view>
+        <router-view class="view three" name="b"></router-view>
     </div> 
 
     <script>
@@ -36,17 +45,32 @@
         const UserHome = {
             template: `<div>user home</div>`
         }
+        const Foo = {template: '<div>foo</div>'}
+        const Bar = {template: '<div>bar</div>'}
+        const Baz = {template: '<div>baz</div>'}
         
       
 
         const router = new VueRouter({
             routes: [
                 {
-                    path: '/user/123', 
+                    path: '/', 
                     // 在链接一个路由或者执行一些跳转的时候，可以在穿件Router实例
                     // 的时候，在routes配置中给某个路由设置名称
                     name: 'user',
-                    component: UserHome
+                    components: {
+                        default: Foo,
+                        a: Bar,
+                        b: Baz
+                    } 
+                },
+                {
+                    path: '/other',
+                    components: {
+                        default: Baz,
+                        a: Bar,
+                        b: Foo
+                    }
                 }
             ]
             
