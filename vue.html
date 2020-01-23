@@ -16,72 +16,28 @@
     </div> 
 
     <script>
-        // TODO: 嵌套命名视图
-        const UserSettingsNav = {
-            template: `
-                    <div class="us_nav">
-                        <router-link to="/settings/emails">emails</router-link>
-                        <br>
-                        <router-link to="/settings/profile">profile</router-link>
-                    </div>
-                `
-        }
-
-        const UserSettings = {
-            template: `
-                    <div class="us">
-                        <h2>User Settings</h2>
-                        
-                    </div>
-                    `,
-                    components: {UserSettingsNav}
-        }
-
-        const UserEmailSubscriptions = {
-            template: `
-                    <div>
-                        <h3>Email Subscriptions</h3>
-                    </div>    
-                `
-        }
-
-        const UserProfile = {
-            template: `
-                    <div>Edit your profile</div>
-                `
-        }
-
-        const UserProfilePreview = {
-            template: `
-                    <div>
-                        <h3>Preview of your profile</h3>
-                    </div>
-                `
-        }
+       const UserSettingsNav = {template: '<div>UserSettingsNav</div>'}
+       const UserSettings = {template: '<div>UserSettings</div> '}
+       const redirect = {template:'<div>重定向</div>'}
         
+    //    重定向也是通过routes配置来完成，下面例子是从/a重定向到/b 
         const router = new VueRouter({
-            // mode: 'history',
             routes: [
-                {
-                    path: '/settings', 
-                    components: UserSettings,
-                    children: [{
-                        path: 'emails',
-                        component: UserEmailSubscriptions
-                    },{
-                        path: 'profile',
-                        components: {
-                            default: UserProfile,
-                            helper: UserProfilePreview
-                        }
-                    }] 
-                }
+                // { path: '/a', component: UserSettingsNav },
+                // 重定向的目标也可以是命名的路由
+                // { path: '/b', component: UserSettings, name: 'UserSettings' },
+                // { path: '/a', redirect: { name: 'UserSettings'}},
+                // { path: '/a', component: UserSettingsNav},
+                // TODO: 方法，动态返回重定向目标
+                // { path: '/a', redirect: to => {
+
+                // }}
+
+                // 别名
+                { path: '/a', component: UserSettingsNav, alias:  '/b'}
             ]
-            
         })
 
-        // <!-- 编程式 -->
-        router.push('/settings/emails')
 
         const app = new Vue({
             router
