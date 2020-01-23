@@ -13,6 +13,9 @@
         <h1>Hello App!</h1>
 
         <router-view></router-view>
+        <!-- 声明式 -->
+        <router-link to="...">
+
     </div> 
 
     <script>
@@ -37,32 +40,50 @@
 
         const router = new VueRouter({
             routes: [
-                { 
-                    path: '/user/:id', component: User, 
-                    children: [
-                        {
-                            path: '/user/:id', component: User,
-                            children: [
-                                // 当/user/:id匹配成功
-                                // UserHome会被渲染在User的<router-view>中
-                                { path: '', component: UserHome }
-                            ] 
-                        },
-                        {
-                            // 当/user/:id/profile匹配成功
-                            // UserProfile会被渲染在User的<router-view>中
-                            path: 'profile',
-                            component: UserProfile
-                        },
-                        {
-                            // 当/user/:id/posts匹配成功时
-                            // UserPosts会被渲染在User的<router-view>中
-                            path: 'posts',
-                            component: UserPosts
-                        }
-                    ]}
+                {path: '/user/123', component: UserHome}
             ]
         })
+        // 编程式
+        // router.push(...)
+        // 字符串 /home
+        // router.push('home')
+
+        // 对象/home
+        // router.push({path: 'home'})
+
+        // 命名的路由 /user/123
+        // router.push({name: 'user', params: {usrId: '123'}})
+
+        // 带查询参数，变成/register?plain=private 
+        // router.push({ path: 'register', query: {plain: 'private'}})
+
+        // const userId = '123'
+        // router.push({name: 'user', params: {usrId}}) // /user/123 
+        // router.push({path: `/user/${userId}`}) // /user/123
+        // 这里的params不生效
+        // router.push({path: '/user', params: { userId }}) // /users
+
+        // 注意： 
+        // 在router.push 或者 router.replace 中提供onComplete 和 onAbort 回调作为第二个和
+        // 第三个参数这些回调将会在导航成功完成 (在所有的异步钩子被解析之后) 或终止 (导航到相同的路由、或在当前导航完成之前导航到另一个不同的路由) 的时候进行相应的调用
+
+        router.push({ name: 'user', params: {userId: '123' }})
+
+        // router.push(location, onComplete?, onAbort?)
+        // router.replace(location, onComplete?, onAbort?)
+
+        // 在浏览器记录中前进一步，等同于 history.forward()
+        // router.go(1)
+
+        // // 后退一步记录，等同于 history.back()
+        // router.go(-1)
+
+        // // 前进 3 步记录
+        // router.go(3)
+
+        // // 如果 history 记录不够用，那就默默地失败呗
+        // router.go(-100)
+        // router.go(100)
 
         const app = new Vue({
             router
