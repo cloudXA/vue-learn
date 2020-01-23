@@ -12,72 +12,76 @@
     <div id="app"> 
         <h1>Hello App!</h1>
 
-        <!-- <router-view></router-view> -->
-        <!-- 声明式 -->
-        <!-- <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link> -->
-        <ul>
-            <li>
-                <router-link to="/">/</router-link>
-                <router-link to="/other">other</router-link>
-            </li>
-        </ul>
-        <!-- 命名视图--同级展示多个视图，而非嵌套展示 -->
-        <router-view class="view one"></router-view>
-        <router-view class="view two" name="a"></router-view>
-        <router-view class="view three" name="b"></router-view>
+        <router-view></router-view>
     </div> 
 
     <script>
+        // TODO: 嵌套命名视图
+        const UserSettingsNav = {
+            template: `
+                    <div class="us_nav">
+                        <router-link to="/settings/emails">emails</router-link>
+                        <br>
+                        <router-link to="/settings/profile">profile</router-link>
+                    </div>
+                `
+        }
 
-        const User = {
-            template: `<div>
-                            User {{ $route.params.id }}<br> 
-                            // 一个被渲然的组件同样可以包含自己的嵌套
-                            <router-view></router-view>
-                       </div>`
+        const UserSettings = {
+            template: `
+                    <div class="us">
+                        <h2>User Settings</h2>
+                        
+                    </div>
+                    `,
+                    components: {UserSettingsNav}
         }
-        const UserPosts = {
-            template: `<div>user posts </div>`
+
+        const UserEmailSubscriptions = {
+            template: `
+                    <div>
+                        <h3>Email Subscriptions</h3>
+                    </div>    
+                `
         }
+
         const UserProfile = {
-            template: `<div>user posts </div>`
+            template: `
+                    <div>Edit your profile</div>
+                `
         }
-        const UserHome = {
-            template: `<div>user home</div>`
-        }
-        const Foo = {template: '<div>foo</div>'}
-        const Bar = {template: '<div>bar</div>'}
-        const Baz = {template: '<div>baz</div>'}
-        
-      
 
+        const UserProfilePreview = {
+            template: `
+                    <div>
+                        <h3>Preview of your profile</h3>
+                    </div>
+                `
+        }
+        
         const router = new VueRouter({
+            // mode: 'history',
             routes: [
                 {
-                    path: '/', 
-                    // 在链接一个路由或者执行一些跳转的时候，可以在穿件Router实例
-                    // 的时候，在routes配置中给某个路由设置名称
-                    name: 'user',
-                    components: {
-                        default: Foo,
-                        a: Bar,
-                        b: Baz
-                    } 
-                },
-                {
-                    path: '/other',
-                    components: {
-                        default: Baz,
-                        a: Bar,
-                        b: Foo
-                    }
+                    path: '/settings', 
+                    components: UserSettings,
+                    children: [{
+                        path: 'emails',
+                        component: UserEmailSubscriptions
+                    },{
+                        path: 'profile',
+                        components: {
+                            default: UserProfile,
+                            helper: UserProfilePreview
+                        }
+                    }] 
                 }
             ]
             
         })
 
         // <!-- 编程式 -->
-        router.push({name: 'user', params: { userId: 1234}})
+        router.push('/settings/emails')
 
         const app = new Vue({
             router
