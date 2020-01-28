@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+    <div id="app"> 
+        <h1>Hello App!</h1>
+
+        <router-view></router-view>
+    </div> 
+
+    <script>
+        const User = {
+            props: ['id'],
+            template: '<div>User {{ id }} </div>'
+        }
+        // TODO: 
+        // 布尔模式
+            // 如果props被设置为true，route.params将会设置为组件属性  
+
+        // 对象模式
+            // 如果 props 是一个对象，它会被按原样设置为组件属性。当 props 是静态的时候有用。
+
+        // 函数模式
+            // 创建一个函数返回props，这样你便可以将参数转换为另一种类型，将静态值与基于已有的值结合
+        const routes = [
+            { path: '/foo/:id', component: User, props: true },
+
+            // 对于包含命名视图的路由，必须分别为每个命名视图添加'props'选项
+            {
+                path: '/foo/:id',
+                components: {default: User, sidebar: Sidebar },
+                props: {default: true, sidebar: false }
+            }
+        ]
+
+        const router = new VueRouter({
+            routes
+        })
+        var vm = new Vue({
+            
+            router
+        }).$mount('#app')
+    </script>
+
+</body>
+</html>
